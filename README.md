@@ -7,13 +7,13 @@
 
 # Start Server
 
-Open a shell an execute the following command to build the docker image
+Open a shell in the *DHBW_SWE_Server* folder an execute the following command to build the docker image
 
 ````shell
-./mvnw install dockerfile:build
+mvn install dockerfile:build
 ````
 
-Then use docker-compose to start the database and spring server
+Then use docker-compose in the folder above to start the database and spring server
 
 ````shell
 docker-compose up
