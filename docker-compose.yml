@@ -1,0 +1,19 @@
+version: '3'
+services:
+  node:
+    build: swe/server
+    ports:
+    - "8080:8080"
+    links:
+    - psql
+    volumes:
+    - ./tmp
+  psql:
+    image: postgres:10-alpine
+    ports:
+    - "5432:5432"
+    volumes:
+    - ./sql:/docker-entrypoint-initdb.d
+    environment:
+    - POSTGRES_PASSWORD=admin
+    - POSTGRES_USER=admin
