@@ -18,5 +18,5 @@ public class Kunde {
 	private int id;
 	
 	private String name;
-	private String adresse;
+	private String address;
 }

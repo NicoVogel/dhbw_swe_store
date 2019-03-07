@@ -17,11 +17,11 @@ public class Produkt {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private int anzahl;
-	private String bezeichnung;
-	private String kathegorie;
-	private double verkaufspreis;
-	private double einkaufspreis;
-	private String bezugsquelle;
+	private int count;
+	private String description;
+	private String categorie;
+	private double sellPrice;
+	private double buyPrice;
+	private String supplyer;
 	
 }
