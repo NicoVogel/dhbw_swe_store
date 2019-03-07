@@ -18,3 +18,9 @@ Then use docker-compose in the folder above to start the database and spring ser
 ````shell
 docker-compose up
 ````
+
+# Maven install
+
+download the binary from here: https://maven.apache.org/download.cgi
+
+uncompress it and ten add it to the environment variables as shown here: https://maven.apache.org/install.html
