@@ -7,7 +7,7 @@
 
 # Start Server
 
-Open a shell in the *DHBW_SWE_Server* folder an execute the following command to build the docker image
+Open a shell in the *DHBW_SWE_Server* folder and execute the following command to build the docker image
 
 ````shell
 mvn install dockerfile:build
@@ -27,4 +27,4 @@ There is also a postman collection file which contains example calls. If you use
 
 download the binary from here: https://maven.apache.org/download.cgi
 
-uncompress it and ten add it to the environment variables as shown here: https://maven.apache.org/install.html
+uncompress it and then add it to the environment variables as shown here: https://maven.apache.org/install.html
