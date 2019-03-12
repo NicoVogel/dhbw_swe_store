@@ -11,17 +11,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Produkt {
-	
+public class Customer {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private int anzahl;
-	private String bezeichnung;
-	private String kathegorie;
-	private double verkaufspreis;
-	private double einkaufspreis;
-	private String bezugsquelle;
-	
+	private String name;
+	private String address;
 }
