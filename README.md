@@ -19,6 +19,10 @@ Then use docker-compose in the folder above to start the database and spring ser
 docker-compose up
 ````
 
+# Postman
+
+There is also a postman collection file which contains example calls. If you use Docker Toolbox, this collection uses the default address for that. Otherwise you need to replace *192.168.99.100* with *localhost*
+
 # Maven install
 
 download the binary from here: https://maven.apache.org/download.cgi
