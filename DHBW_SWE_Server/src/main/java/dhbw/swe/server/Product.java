@@ -19,9 +19,9 @@ public class Product {
 	
 	private int count;
 	private String description;
-	private String categorie;
+	private String category;
 	private double sellPrice;
 	private double buyPrice;
-	private String supplyer;
+	private String supplier;
 	
 }

@@ -12,9 +12,9 @@ create table product(
 	id serial,
 	count int, 
     description text,
-    categorie text,
+    category text,
     sellPrice numeric(6,2),
     buyPrice numeric(6,2),
-    supplyer text,
+    supplier text,
     primary key(id)
 );
