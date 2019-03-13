@@ -23,5 +23,6 @@ public class Product {
 	private double sellPrice;
 	private double buyPrice;
 	private String supplier;
+	private String origin;
 	
 }
