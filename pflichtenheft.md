@@ -199,13 +199,13 @@
 
 - Name
 - Adresse
-- Preisliste
+- ~~Preisliste~~
 
 **/D03/ Produzent**
 
 - Name
 - Adresse
-- Preisliste
+- ~~Preisliste~~
 
 **/D04/ Kunde**
 
