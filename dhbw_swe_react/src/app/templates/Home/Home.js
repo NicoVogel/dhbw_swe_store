@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import './Home.scss';
 
+import Headline from '../../atoms/Headline/Headline';
+
 class Home extends Component {
     render() { 
         return ( 
            <div className='home'>
-                <h1>Großmarkt</h1>
-                <h2>Heinz Zitrus GmBH</h2>
+                <Headline text='Großmarkt'/>
+                <Headline text='Heinu Zitrus GmbH' style="color: green"/>
            </div>
         );
     }
