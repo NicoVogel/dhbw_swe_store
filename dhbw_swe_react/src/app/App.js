@@ -20,17 +20,19 @@ class App extends Component {
       <BrowserRouter>
         <div className='app'>
           <Navigation/>
-          <Switch className='flex-item'>
-            <Route path="/home" component={Home} exact />
-            <Route path="/products" component={Products} />
-            <Route path="/producers" component={Producers} />
-            <Route path="/suppliers" component={Suppliers} />
-            <Route path="/customers" component={Customers} />
-            <Route path="/deliverynote" component={Deliverynote} />
-            <Route path="/search" component={Search} />
-            <Route path="/settings" component={Settings} />
-            <Route component={Error} />
-          </Switch>
+          <div className='switch-wrapper'>
+            <Switch className='flex-item'>
+              <Route path="/home" component={Home} exact />
+              <Route path="/products" component={Products} />
+              <Route path="/producers" component={Producers} />
+              <Route path="/suppliers" component={Suppliers} />
+              <Route path="/customers" component={Customers} />
+              <Route path="/deliverynote" component={Deliverynote} />
+              <Route path="/search" component={Search} />
+              <Route path="/settings" component={Settings} />
+              <Route component={Error} />
+            </Switch>
+          </div>
         </div>
       </BrowserRouter>
     );
