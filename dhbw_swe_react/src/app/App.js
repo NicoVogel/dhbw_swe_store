@@ -18,10 +18,10 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className='app'>
-          <Navigation/>
-          <div className='switch-wrapper'>
-            <Switch className='flex-item'>
+        <div className="app">
+          <Navigation />
+          <div className="switch-wrapper">
+            <Switch className="flex-item">
               <Route path="/home" component={Home} exact />
               <Route path="/products" component={Products} />
               <Route path="/producers" component={Producers} />
