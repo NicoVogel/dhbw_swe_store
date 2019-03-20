@@ -21,7 +21,7 @@ class App extends Component {
         <div className='app'>
           <Navigation/>
           <Switch className='flex-item'>
-            <Route path="/" component={Home} exact />
+            <Route path="/home" component={Home} exact />
             <Route path="/products" component={Products} />
             <Route path="/producers" component={Producers} />
             <Route path="/suppliers" component={Suppliers} />
