@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
+import Headline from '../../atoms/Headline/Headline';
+
 class Deliverynote extends Component {
     state = {  }
     render() { 
-        return ( <h2>Deliverynote Component</h2> );
+        return (
+            <Headline text='Lieferschein' />
+        );
     }
 }
  

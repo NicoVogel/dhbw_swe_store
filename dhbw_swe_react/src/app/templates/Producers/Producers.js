@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 
+
+import Headline from '../../atoms/Headline/Headline';
+
 class Producers extends Component {
     state = {  }
     render() { 
-        return ( <h2>Producers</h2> );
+        return (
+            <Headline text='Hersteller' />
+        );
     }
 }
  

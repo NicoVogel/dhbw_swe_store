@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
+import Headline from '../../atoms/Headline/Headline';
+
 class Settings extends Component {
     state = {  }
     render() { 
-        return ( <h1>Settings</h1> );
+        return ( 
+            <Headline text='Einstellungen' />
+        );
     }
 }
  
