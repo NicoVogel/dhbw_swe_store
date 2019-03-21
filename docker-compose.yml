@@ -1,13 +1,5 @@
 version: '3'
 services:
-  node:
-    image: node:alpine
-    environment:
-      - NODE_ENV=production
-    volumes:
-    - ./dhbw_swe_react:/home/node
-    - ./logs/node:/root/.npm/_logs
-    command: sh -c "cp -r /home/node /home/work && cd /home/work && npm install && npm run build && cp -Lrf /home/work /home/node"
   server:
     image: swe-server:latest
     ports:
