@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
-import { faDivide } from '@fortawesome/free-solid-svg-icons';
 
 class Suppliers extends Component {
     state = {  }

@@ -8,7 +8,7 @@ class Home extends Component {
         return ( 
            <div className='home'>
                 <Headline text='Großmarkt'/>
-                <Headline text='Heinu Zitrus GmbH' style="color: green"/>
+                <Headline text='Heinu Zitrus GmbH'/>
            </div>
         );
     }
