@@ -6,6 +6,10 @@
 
   .switch-wrapper {
     flex: 1;
-    margin: 50px;
+    margin: 25px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
   }
 }
