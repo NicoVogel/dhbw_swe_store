@@ -7,53 +7,77 @@
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
-  transition: all 500ms ease-in-out;
-  // &:hover {
-  //   width: 400px;
-  // transition: all 500ms ease-in-out;
+  transition: all 350ms ease-in-out;
 
-  // }
+  padding: 5px;
 
   &.open {
-    width: 40%;
-    max-width: 400px;
+    width: 400px;
   }
 
 
-  .title {
-    color: white;
-    font-size: 3rem;
-    font-weight: bold;
-    align-self: center;
+  .nav-link {
+    color: $color-text-light;
+    font-size: 1.75rem;
     text-decoration: none;
+    display: flex;
+
+    .icon {
+      width: 1.75rem;
+    }
+
+    .text {
+      margin-left: 10px;
+    }
+
+    &.active {
+      color: $color-accent;
+    }
   }
-  .items-container {
-    box-sizing: border-box;
+
+  .nav-item {
     flex: 1;
-    margin-left: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    .nav-item {
+    padding-left: 15px;
 
+    .items-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  .top {
+    position: relative;
+    padding-top: 15px;
+    .nav-back {
+      font-size: 2rem;
+      color: $color-text-light;
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 4rem;
+      // color: $color-accent;
       color: $color-text-light;
       text-decoration: none;
-      font-size: 2rem;
 
-      display: flex;
-      
-      .text {
-        margin-left: 15px;
-      }
-
-      .icon {
-        width: 2rem;
-      }
-      &.active {
-        color: $color-accent;
-      }  // margin: 15px;
     }
+  }
+
+  .center {
+    flex: 2;
+    justify-content: space-around;
+  }
+
+  .bottom {
+    justify-content: flex-end;
   }
 }
