@@ -1,4 +1,4 @@
-# Pflichtenheft **"Obst und Gemüse Meier OHG"** NOT UPDATED
+# Pflichtenheft **"Obst und Gemüse Meier OHG"**
 ---
 ## 1. Zielbestimmung
 
@@ -215,10 +215,10 @@
 
 **/D05/ Lieferschein**
 
-- Kunde (referenz auf D04)
+- Kunde (Referenz auf D04)
 - Bestellnummer
 - Bestelldatum
-- bestellte Waren (ist eine liste)
+- Bestellte Waren (Liste)
   - Bezeichnung
   - Menge
 
@@ -229,7 +229,7 @@
 
 - 1000 Produkte müssen innerhalb von 2 Sekunden abgerufen werden können!
 
-**/L02/ Kompatibilität
+**/L02/ Kompatibilität**
 
 - Die Applikation muss mindestens auf den folgenden Browsern lauffähig sein
   - Chrome
