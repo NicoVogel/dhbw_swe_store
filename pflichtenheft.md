@@ -29,8 +29,8 @@
 
 ### 2.1 Anwendungsbereiche
 
-- Verwaltung Lager
-- Verwaltung Kunden
+- Verwaltung des Lagersystems
+- Verwaltung von Kundenbestellungen
 
 ### 2.2 Zielgruppen
  
@@ -218,8 +218,15 @@
 
 - 1000 Produkte müssen innerhalb von 2 Sekunden abgerufen werden können!
 
-**WIP** Verfeinerung / Eigene Anforderungen
+**/L02/ Kompatibilität
 
+- Die Applikation muss mindestens auf den folgenden Browsern lauffähig sein
+  - Chrome
+  - Edge
+  - Safari
+  - Firefox
+  - Opera
+  
 ## 7. Qualitätsanforderung
 
 | Produktqualität | sehr gut | gut | normal |nicht relevant |
@@ -317,8 +324,8 @@
 
 ## 13. Spezielle Anforderungen an die Entwicklungsumgebung
 
-- **Node.js (Backend)**
-- **Angular 6 (Frontend)**
+- **Node.js mindestens Version 8 (Backend)**
+- **React mindestens Version 16 (Frontend)**
 
 ### Software
 - Texteditor
