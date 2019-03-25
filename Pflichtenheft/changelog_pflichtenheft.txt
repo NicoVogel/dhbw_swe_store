@@ -1,0 +1,16 @@
+4.1
+  F05 Beschreibung geändert, entsprechend D05
+  F07 Nachbedingung und Erweiterung geändert
+
+5.
+  D01 Produktdaten Bezeichnungen und Felder geändert
+  D05 Lieferschein hinzugefügt
+
+8.
+  B02 Aufbau geändert
+
+12.1
+  Begrifflichkeiten geändert
+
+13.
+  Entwicklungsumgebung geändert
