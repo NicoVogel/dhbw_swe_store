@@ -158,14 +158,15 @@
 - Vorbedingung:
   - Eingabe des Kunden
   - Eingabe von Positionen
-- Nachbedingung Erfolg: Rückgabe eines Dokuments
+- Nachbedingung Erfolg: Rückgabe eines Dokuments und änderung des Datenbestands
 - Nachbedingung Fehlschlag: Fehlermeldung
 - Akteure: Geschäftsführer, Aushilfe
 - Beschreibung:
   - Kundendaten aus Kundendatenbank abrufen und eintragen
   - eingegebene Positionen (Menge, Bezeichnung) eintragen
   - Dokument erzeugen
-- Erweiterung: keine
+- Erweiterung: 
+  - neuen Datensatz erfassen
 
 **/F08/**
 
@@ -211,6 +212,16 @@
 
 - Name
 - Adresse
+
+**/D05/ Lieferschein**
+
+- Kunde (referenz auf D04)
+- Bestellnummer
+- Bestelldatum
+- bestellte Waren (ist eine liste)
+  - Bezeichnung
+  - Menge
+
 
 ## 6. Leistungsanforderungen
 
