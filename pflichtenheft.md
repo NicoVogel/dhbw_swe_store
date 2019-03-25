@@ -1,4 +1,4 @@
-# Pflichtenheft **"Obst und Gemüse Meier OHG"**
+# Pflichtenheft **"Obst und Gemüse Meier oHG"**
 ---
 ## 1. Zielbestimmung
 
@@ -133,7 +133,6 @@
     - Bezeichnung
     - **Produktart**
     - Einkaufsdatum
-    - ~~Mindesthaltbarkeitsdatum~~
     - **Verkaufspreis**
 - Erweiterung: keine
   
@@ -158,7 +157,7 @@
 - Vorbedingung:
   - Eingabe des Kunden
   - Eingabe von Positionen
-- Nachbedingung Erfolg: Rückgabe eines Dokuments und änderung des Datenbestands
+- Nachbedingung Erfolg: Rückgabe eines Dokuments und Änderung des Datenbestands
 - Nachbedingung Fehlschlag: Fehlermeldung
 - Akteure: Geschäftsführer, Aushilfe
 - Beschreibung:
@@ -245,7 +244,7 @@
 | **Funktionalität** | | | | |
 |Angemessenheit |X | | | |
 |Richtigkeit| |X | | |
-|Interoperabilität |X |X | | |
+|Interoperabilität | | | | X|
 |Ordnungsmäßigkeit |X | | | |
 |Sicherheit| | |X | |
 |Übertragbarkeit| | | |X|
@@ -270,16 +269,15 @@
 **/B02/ Aufbau**
 
 - "übersichtliche Struktur"
-- Oberer Bereich: Menüleiste mit Optionen
-  - Datenbankoperationen(/F01-F04/)
+- Seitlicher Bereich: Menüleiste mit Optionen
+  - Datenbankoperationen (/F01-F04/) integriert mit Ausgabe von Daten (/F05-F06/)
     - Produkt
     - Kunde
     - Lieferant
     - Produzent
-  - Ausgabe von Daten (/F05-F06/)
   - Lieferscheinerstellung (/F07/)
   - Suche (/F08/)
-- Mittlerer Bereich: Darstellung der Operation/Anfrage
+- Hauptbereich: Darstellung der Operation/Anfrage
 
 **/B03/ Fehleingaben**
 
@@ -291,7 +289,7 @@
 
 **/B05/ Hilfedatenbank**
 
-- anpassenden Stellen werden Hilfetexte eingeblendet
+- An passenden Stellen werden Hilfetexte eingeblendet
 
 ## 9. Lieferanforderungen
 
