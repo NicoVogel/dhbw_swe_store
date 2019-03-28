@@ -9,22 +9,29 @@ class Table extends Component {
                 <table>
                     <thead>
                     <tr>
+                        <th id='hiddencolumn'></th>
                         { this.props.tableHeaders.map((object) => <th>{object.text}</th>)}
                     </tr>
                     </thead>
                     
                     <tbody>
                     {
+                        
                         this.props.tableData.map( (dataObject) => 
                             <tr>
+                                <td id='hiddencolumn'></td>
                                 {
                                     // TODO change defaultValue to value nad set change handler
                                     Object.keys(dataObject).map(key => <td><input className='input-field' type="text" defaultValue={dataObject[key]} /></td> )
+                                    
                                 }
                             </tr>
                         )
                     }
                     <tr>
+                    <td id='hiddencolumn'> 
+                    <button id='addbutton'>+</button>
+                    </td>
                             {this.props.tableHeaders.map( (item) => <td><input className='input-field' type="text" placeholder={item.text}/></td>)}
                     </tr>
                     </tbody>
