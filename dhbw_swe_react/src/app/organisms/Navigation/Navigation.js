@@ -58,6 +58,7 @@ class Navigation extends Component {
               <FontAwesomeIcon icon="users" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Kunden </div>}
             </NavLink>
+            <p className="item-separator"></p>
             <NavLink className="nav-link" to="/deliverynote">
               <FontAwesomeIcon icon="file-invoice" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Lieferschein </div>}

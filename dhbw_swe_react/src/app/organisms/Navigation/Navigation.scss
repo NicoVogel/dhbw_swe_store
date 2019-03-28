@@ -16,6 +16,7 @@
 
   &.open {
     width: 400px;
+    padding-left: 20px;
   }
 
 
@@ -53,7 +54,7 @@
   }
   .top {
     position: relative;
-    padding-top: 15px;
+    padding-top: 30px;
     .nav-back {
       font-size: 2rem;
       color: $color-text-light;
@@ -79,5 +80,6 @@
 
   .bottom {
     justify-content: flex-end;
+    padding-bottom: 30px;
   }
 }
