@@ -14,7 +14,7 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:32405/produkt')
+    fetch('http://viet.nat.selfnet.de:32405/produkt')
       .then(results => results.json())
       .then((data) => {
         this.setState({

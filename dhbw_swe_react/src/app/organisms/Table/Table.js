@@ -19,7 +19,7 @@ class Table extends Component {
 
           <tbody>
             {
-              tableData.map(dataObject => (
+              realTableData.map(dataObject => (
                 <tr>
                   <td id="hiddencolumn" />
                   {
