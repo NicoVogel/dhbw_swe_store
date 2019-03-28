@@ -6,9 +6,25 @@ import Table from '../../organisms/Table/Table';
 
 
 class Products extends Component {
-    state = {  }
-    render() { 
-        const productList = [
+  constructor() {
+    super();
+    this.state = {
+      productList: [],
+    };
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:32405/produkt')
+      .then(results => results.json())
+      .then((data) => {
+        this.setState({
+          productList: data._embedded.produkt,
+        });
+      });
+  }
+
+  render() {
+    const mockProductList = [
             {
                 count: 13,
                 description: 'Kartoffel',
@@ -227,13 +243,20 @@ class Products extends Component {
             {
                 id: 'origin',
                 text: 'Herkunft'
-            }
-        ]
-        return ( 
+      },
+      {
+        id: 'buyDate',
+        text: 'Einkaufsdatum',
+      },
+    ];
+    const {
+      productList,
+    } = this.state;
+    return (
             <div className="products-container">
                 <Headline text='Produktübersicht' />
                 <div className="table-container">
-                    <Table tableHeaders={productTableHeaders} tableData={productList}/>
+          <Table tableHeaders={productTableHeaders} tableData={mockProductList} realTableData={productList} />
                 </div>
             </div>
             
