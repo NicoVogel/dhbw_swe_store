@@ -1,5 +1,7 @@
 package dhbw.swe.server;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,5 +26,6 @@ public class Product {
 	private double buyPrice;
 	private String supplier;
 	private String origin;
+	private Date buyDate;
 	
 }

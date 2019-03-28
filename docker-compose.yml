@@ -9,7 +9,7 @@ services:
     depends_on:
     - psql
     volumes:
-    - ./tmp
+    - ./dhbw_swe_react/build:/static
   psql:
     image: postgres:10-alpine
     ports:
