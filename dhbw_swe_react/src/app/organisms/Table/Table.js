@@ -5,7 +5,7 @@ import './Table.scss';
 // eslint-disable-next-line react/prefer-stateless-function
 class Table extends Component {
   render() {
-    const { tableHeaders, tableData, realTableData } = this.props;
+    const { tableHeaders, tableData, mockTableData } = this.props;
 
     return (
       <div className="table-container">
@@ -19,7 +19,7 @@ class Table extends Component {
 
           <tbody>
             {
-              realTableData.map(dataObject => (
+              tableData.map(dataObject => (
                 <tr>
                   <td id="hiddencolumn" />
                   {

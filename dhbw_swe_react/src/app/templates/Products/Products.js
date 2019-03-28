@@ -260,10 +260,10 @@ class Products extends Component {
             tableHeaders={
             productTableHeaders
           }
-            tableData={
+            mockTableData={
             mockProductList
           }
-            realTableData={
+            tableData={
             productList
           }
           />
