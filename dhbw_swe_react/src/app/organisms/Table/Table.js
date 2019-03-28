@@ -27,7 +27,7 @@ class Table extends Component {
                     Object.keys(dataObject).map((key) => {
                       if (key !== '_links') {
                         return <td><input className="input-field" type="text" defaultValue={dataObject[key]} /></td>;
-                      } return <td />;
+                      } return null;
                     })
                   }
                 </tr>
@@ -35,7 +35,7 @@ class Table extends Component {
             }
             <tr>
               <td id="hiddencolumn">
-                <button id="addbutton">+</button>
+                <button id="addbutton" type="submit">+</button>
               </td>
               {tableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
             </tr>
