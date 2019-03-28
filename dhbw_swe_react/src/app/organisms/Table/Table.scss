@@ -42,7 +42,10 @@ Table #hiddencolumn {
 
 Table #addbutton {
     border: none;
-    background-color: red;
+    background-color: $color-main;
+    color: white;
     outline: none;
     border-radius: 5px;
+    height: 30px;
+    width: 30px;
 }
