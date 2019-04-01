@@ -7,7 +7,7 @@ Table {
 
 Table td,
 Table th {
-    border: 1px solid #ddd;
+    border: 1px solid rgb(161, 161, 161);
     padding: 8px;
 }
 
@@ -16,7 +16,7 @@ Table tr:nth-child(even) {
 }
 
 Table tr:hover {
-    background-color: #ddd;
+    background-color: #e9e9e9;
 }
 
 Table th {
@@ -50,4 +50,8 @@ Table #addbutton {
     height: 30px;
     width: 30px;
     font-size: larger;
+    cursor: pointer;
+    &:active {
+        color: $color-accent;
+    }
 }
