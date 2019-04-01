@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +28,7 @@ public class Product {
 	private double buyPrice;
 	private String supplier;
 	private String origin;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.mm.yyyy")
 	private Date buyDate;
 	
 }
