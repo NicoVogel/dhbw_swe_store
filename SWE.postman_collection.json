@@ -118,6 +118,37 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"count\": \"5\",\n\t\"description\":\"test\",\n\t\"category\":\"obst\",\n\t\"sellPrice\":\"10\",\n\t\"buyPrice\":\"8\",\n\t\"supplier\":\"asia food\",\n\t\"origin\":\"viet\",\n\t\"buyDate\":\"01.04.2019\"\n}"
+				},
+				"url": {
+					"raw": "192.168.99.100:8080/produkt",
+					"host": [
+						"192",
+						"168",
+						"99",
+						"100"
+					],
+					"port": "8080",
+					"path": [
+						"produkt"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -13,7 +13,7 @@ class Customers extends Component {
   }
 
   componentDidMount() {
-    fetch('http://viet.nat.selfnet.de:32405/kunde')
+    fetch('http://192.168.99.100:8080/kunde')
       .then(results => results.json())
       .then((data) => {
         this.setState({
@@ -43,11 +43,11 @@ class Customers extends Component {
         <div className="table-container">
           <Table
             tableHeaders={
-            productTableHeaders
-          }
+              productTableHeaders
+            }
             tableData={
-            customerList
-          }
+              customerList
+            }
           />
         </div>
       </div>
