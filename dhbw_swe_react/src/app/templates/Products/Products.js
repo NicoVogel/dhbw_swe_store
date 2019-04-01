@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Products.scss';
+import { SERVER_ADDRESS, REST_PRODUCT } from '../Resources';
 
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
@@ -14,7 +15,7 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    fetch('http://viet.nat.selfnet.de:32405/produkt')
+    fetch(`${SERVER_ADDRESS}${REST_PRODUCT}`)
       .then(results => results.json())
       .then((data) => {
         this.setState({
@@ -258,14 +259,14 @@ class Products extends Component {
         <div className="table-container">
           <Table
             tableHeaders={
-            productTableHeaders
-          }
+              productTableHeaders
+            }
             mockTableData={
-            mockProductList
-          }
+              mockProductList
+            }
             tableData={
-            productList
-          }
+              productList
+            }
           />
         </div>
       </div>

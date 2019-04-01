@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Customer.scss';
+import { SERVER_ADDRESS, REST_CUSTOMER } from '../Resources';
 
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
@@ -13,7 +14,7 @@ class Customers extends Component {
   }
 
   componentDidMount() {
-    fetch('http://192.168.99.100:8080/kunde')
+    fetch(`${SERVER_ADDRESS}${REST_CUSTOMER}`)
       .then(results => results.json())
       .then((data) => {
         this.setState({
