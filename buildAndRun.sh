@@ -1,12 +1,11 @@
 #!/bin/sh
 
-MOUNT_PATH = $(pwd)
-USER_PATH = Path-For-Docker -Path $env:USERPROFILE
+MOUNT_PATH=`pwd`
 #https://hub.docker.com/_/maven#reusing-the-maven-local-repository
 VOLUME_M2_PATH="~/.m2:/root/.m2"
 #https://hub.docker.com/_/maven#how-to-use-this-image
-VOLUME_PROJECT="${MOUNT_PATH}/dhbw_swe_server:/usr/src/mymaven"
-VOLUME_NODE="${MOUNT_PATH}/dhbw_swe_react:/home/node"
+VOLUME_PROJECT="$MOUNT_PATH/dhbw_swe_server:/usr/src/mymaven"
+VOLUME_NODE="$MOUNT_PATH/dhbw_swe_react:/home/node"
 
 echo "build java server"
 docker run -it -v $VOLUME_M2_PATH -v $VOLUME_PROJECT -w /usr/src/mymaven maven:alpine mvn install -e dockerfile:build
