@@ -1,4 +1,4 @@
-#!/bin/besh
+#!/bin/sh
 
 MOUNT_PATH = $(pwd)
 USER_PATH = Path-For-Docker -Path $env:USERPROFILE
