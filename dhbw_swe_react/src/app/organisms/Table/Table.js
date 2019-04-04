@@ -18,7 +18,28 @@ class Table extends Component {
   }
 
   changeHandler = event => {
-    console.log(event.target.value);
+  
+   const rowLine = parseInt(event.target.id.split('_')[0]);
+   const columnKey = event.target.id.split('_')[1];
+   const newValue = event.target.value;
+
+    this.setState(state => {
+      // create new table where the change is added
+     const tableData = state.tableData.map((row, rowIndex) => {
+       if(rowIndex===rowLine) {
+         // change the value at the right spot
+         row[columnKey] = newValue;      
+        } 
+      return row;
+     });
+
+     // only touch tableData, the rest remains original
+     return {
+       ...this.state,
+       tableData,
+     }
+   });
+
   }
 
   render() {
@@ -43,7 +64,7 @@ class Table extends Component {
 
           <tbody>
             {
-              this.state.tableData.map((dataObject) => {
+              this.state.tableData.map((dataObject, rowIndex) => {
                 const elementID = `element-${dataObject._links.self.href.slice(-1)}`;
 
                 return (
@@ -55,7 +76,7 @@ class Table extends Component {
                         <td key={`${elementID}-${key}`}>
                         <form>
 
-                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} onChange={this.changeHandler} />
+                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}`} onChange={this.changeHandler} />
                         </form>
                         </td>
                       ))
