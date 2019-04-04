@@ -10,10 +10,11 @@ class Table extends Component {
   constructor(props) {
     super(props);
     const { defaultTableHeaders, tableData } = this.props;
-
+    let currentCategory = '';
     this.state = {
       defaultTableHeaders,
       tableData,
+      currentCategory,
     }
   }
 
@@ -22,7 +23,8 @@ class Table extends Component {
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
    const newValue = event.target.value;
-
+   console.log(this.state.currentCategory);
+    
     this.setState(state => {
       // create new table where the change is added
      const tableData = state.tableData.map((row, rowIndex) => {
@@ -42,12 +44,27 @@ class Table extends Component {
 
   }
 
-  render() {
+  componentDidMount() {
+    // TODO: calling component/category should identify itself to Table, instead of parsing it through response
+    // this will not work if the database is empty initially!
 
-    const headerList = Object.keys(this.state.tableData[0]);
-    const header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
-      <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
-    ));
+    if(this.state.tableData.length !== 0){
+      this.setState({
+        ...this.state,
+        currentCategory: Object.keys(this.state.tableData[0]._links).filter(elem => elem !== 'self')[0],
+      });
+    }
+  }
+  render() {
+    let header;
+
+    if(this.state.tableData.length !== 0){
+     
+      const headerList = Object.keys(this.state.tableData[0]);
+      header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
+        <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
+      ));
+    }
 
     return (
       <div className="table-container">
