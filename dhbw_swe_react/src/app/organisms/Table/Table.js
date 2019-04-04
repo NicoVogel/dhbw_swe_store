@@ -33,16 +33,16 @@ class Table extends Component {
           <tbody>
             {
               tableData.map((dataObject) => {
-                const productID = dataObject._links.self.href.slice(-1);
+                const elementID = `element-${dataObject._links.self.href.slice(-1)}`;
 
                 return (
-                  <tr key={productID}>
-                    <td id="hiddencolumn" key={`${productID}-hidden`} />
+                  <tr key={elementID}>
+                    <td id="hiddencolumn" key={`${elementID}-hidden`} />
                     {
                       // TODO change defaultValue to value nad set change handler
                       Object.keys(dataObject).filter(key => key !== '_links').map(key => (
-                        <td key={`${productID}-${key}`}>
-                          <input className="input-field" type="text" key={`${productID}_${key}_input`} defaultValue={dataObject[key]} />
+                        <td key={`${elementID}-${key}`}>
+                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} defaultValue={dataObject[key]} />
                         </td>
                       ))
                     }
