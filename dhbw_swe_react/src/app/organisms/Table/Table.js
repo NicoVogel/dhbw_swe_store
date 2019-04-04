@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import './Table.scss';
 import headerStrings from '../../templates/Resources';
@@ -39,13 +40,11 @@ class Table extends Component {
                     <td id="hiddencolumn" key={`${productID}-hidden`} />
                     {
                       // TODO change defaultValue to value nad set change handler
-                      Object.keys(dataObject).filter(key => key !== '_links').map((key) => {
-                        return (
-                          <td key={`${productID}-${key}`}>
-                            <input className="input-field" type="text" key={`${productID}_${key}_input`} defaultValue={dataObject[key]} />
-                          </td>
-                        );
-                      })
+                      Object.keys(dataObject).filter(key => key !== '_links').map(key => (
+                        <td key={`${productID}-${key}`}>
+                          <input className="input-field" type="text" key={`${productID}_${key}_input`} defaultValue={dataObject[key]} />
+                        </td>
+                      ))
                     }
                   </tr>
                 );
@@ -55,7 +54,7 @@ class Table extends Component {
               <td id="hiddencolumn" key="add-hidden">
                 <button id="addbutton" type="submit" key="add-button">+</button>
               </td>
-              {defaultTableHeaders.map((item, index) => <td key={`add-${index}`}><input className="input-field" type="text" key={`add-${index}-input`} placeholder={headerStrings.get(item) } /></td>)}
+              {defaultTableHeaders.map((item, index) => <td key={`add-${index}`}><input className="input-field" type="text" key={`add-${index}-input`} placeholder={headerStrings.get(item)} /></td>)}
             </tr>
           </tbody>
         </table>
