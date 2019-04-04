@@ -17,7 +17,7 @@ echo "node code volume: ${VOLUME_NODE}"
 docker run -it -e NODE_ENV=production -v $VOLUME_NODE node:alpine /bin/sh -c "cd /home/node && npm install && npm run build"
 
 echo "start server and database"
-if test -eq $1 "prod" 
+if [ $1 = "prod" ]
 then
     set spring_profiles_active="prod"
     docker-compose up -f docker-compose.prod.override.yml
