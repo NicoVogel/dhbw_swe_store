@@ -7,20 +7,28 @@ VOLUME_M2_PATH="$USER_HOME/.m2:/root/.m2"
 #https://hub.docker.com/_/maven#how-to-use-this-image
 VOLUME_PROJECT="$MOUNT_PATH/dhbw_swe_server:/usr/src/mymaven"
 VOLUME_NODE="$MOUNT_PATH/dhbw_swe_react:/home/node"
-VOLUME_DOCKER="/var/run/docker.sock:/var/run/docker.sock"
-DOCKER_HOST="DOCKER_HOST=unix:///var/run/docker.sock"
 
 # build
 if [[ $1 == *"b"* ]] || [[ -z $(docker images -q swe-server) ]]; then
   echo "------------------------------------------------------------------------"
   echo "BUILD java server"
   echo "------------------------------------------------------------------------"
-  docker run --rm -it -v $VOLUME_DOCKER -v $VOLUME_M2_PATH -v $VOLUME_PROJECT -e $DOCKER_HOST -w /usr/src/mymaven maven:alpine mvn install dockerfile:build
+  docker run --rm -it \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $VOLUME_M2_PATH \
+    -v $VOLUME_PROJECT \
+    -e DOCKER_HOST=unix:///var/run/docker.sock \
+    -w /usr/src/mymaven \
+    maven:alpine \
+    mvn install dockerfile:build
 
   echo "------------------------------------------------------------------------"
   echo "BUILD react application"
   echo "------------------------------------------------------------------------"
-  docker run --rm -it -e NODE_ENV=production -v $VOLUME_NODE node:alpine /bin/sh -c "cd /home/node && npm install && npm run build"
+  docker run --rm -it -e NODE_ENV=production \
+    -v $VOLUME_NODE \
+    node:alpine \
+    /bin/sh -c "cd /home/node && npm install && npm run build"
 fi
 
 #remove existing container
