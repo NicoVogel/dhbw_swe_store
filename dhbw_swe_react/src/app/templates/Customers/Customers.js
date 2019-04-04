@@ -43,7 +43,7 @@ class Customers extends Component {
         <Headline text="Kundenübersicht" />
         <div className="table-container">
           <Table
-            tableHeaders={
+            mockTableHeaders={
               productTableHeaders
             }
             tableData={

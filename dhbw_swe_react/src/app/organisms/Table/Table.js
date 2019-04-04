@@ -5,7 +5,13 @@ import './Table.scss';
 // eslint-disable-next-line react/prefer-stateless-function
 class Table extends Component {
   render() {
-    const { tableHeaders, tableData, mockTableData } = this.props;
+    const { mockTableHeaders, tableData, mockTableData } = this.props;
+    
+    let header;
+    if (tableData.length !== 0) {
+      const headerList = Object.keys(tableData[0]);
+      header = headerList.map(columnTitle => <th>{columnTitle}</th>);
+    }
 
     return (
       <div className="table-container">
@@ -13,7 +19,7 @@ class Table extends Component {
           <thead>
             <tr>
               <th id="hiddencolumn" />
-              { tableHeaders.map(object => <th>{object.text}</th>)}
+              {header}
             </tr>
           </thead>
 
@@ -37,7 +43,7 @@ class Table extends Component {
               <td id="hiddencolumn">
                 <button id="addbutton" type="submit">+</button>
               </td>
-              {tableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
+              {mockTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
             </tr>
           </tbody>
         </table>

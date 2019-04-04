@@ -258,7 +258,7 @@ class Products extends Component {
         <Headline text="Produktübersicht" />
         <div className="table-container">
           <Table
-            tableHeaders={
+            mockTableHeaders={
               productTableHeaders
             }
             mockTableData={
