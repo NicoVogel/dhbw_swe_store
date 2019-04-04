@@ -30,7 +30,6 @@ if [[ $1 -eq "prod" ]]
 then
     echo "ENV: Production"
     echo "------------------------------------------------------------------------"
-    set spring_profiles_active="prod"
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 else
     echo "Env: Development"

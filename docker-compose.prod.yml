@@ -5,7 +5,7 @@ services:
     environment:
     # passes the value from the current shell into the container
     # https://docs.docker.com/compose/environment-variables/#pass-environment-variables-to-containers
-    - spring_profiles_active
+    - spring_profiles_active=prod
     - SSL_KEY_STORE_PASSWORD
     volumes:
     - /crt:/crt
