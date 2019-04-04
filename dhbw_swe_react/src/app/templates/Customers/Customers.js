@@ -19,6 +19,7 @@ class Customers extends Component {
       .then((data) => {
         this.setState({
           customerList: data._embedded.kunde,
+          isLoaded: true,
         });
       });
   }
@@ -26,20 +27,22 @@ class Customers extends Component {
   render() {
     const defaultTableHeaders = ['name', 'address'];
     const {
-      customerList,
+      customerList, isLoaded
     } = this.state;
     return (
       <div className="customer-container">
         <Headline text="Kundenübersicht" />
         <div className="table-container">
-          <Table
-            defaultTableHeaders={
-              defaultTableHeaders
+          {isLoaded 
+            ? <Table
+              defaultTableHeaders={
+                defaultTableHeaders
+              }
+              tableData={
+                customerList
+              }/> 
+            : <h1>LOADING</h1>
             }
-            tableData={
-              customerList
-            }
-          />
         </div>
       </div>
     );

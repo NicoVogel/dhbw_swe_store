@@ -21,13 +21,10 @@ class Table extends Component {
   render() {
     const { defaultTableHeaders, tableData } = this.props;
 
-    let header;
-    if (tableData.length !== 0) {
-      const headerList = Object.keys(tableData[0]);
-      header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
-        <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
-      ));
-    }
+    const headerList = Object.keys(tableData[0]);
+    const header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
+      <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
+    ));
 
     return (
       <div className="table-container">

@@ -20,6 +20,7 @@ class Products extends Component {
       .then((data) => {
         this.setState({
           productList: data._embedded.produkt,
+          isLoaded: true,
         });
       });
   }
@@ -28,12 +29,13 @@ class Products extends Component {
     const defaultTableHeaders = ['count', 'description', 'category', 'sellPrice', 'buyPrice', 'supplier', 'origin', 'buyDate'];
 
     const {
-      productList,
+      productList, isLoaded
     } = this.state;
     return (
       <div className="products-container">
         <Headline text="Produktübersicht" />
         <div className="table-container">
+          {isLoaded ? 
           <Table
             defaultTableHeaders={
               defaultTableHeaders
@@ -41,7 +43,8 @@ class Products extends Component {
             tableData={
               productList
             }
-          />
+          /> : <h1>LOADING</h1>
+          }
         </div>
       </div>
 
