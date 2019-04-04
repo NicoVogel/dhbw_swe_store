@@ -19,14 +19,15 @@ function Path-For-Docker($PATH){
 }
 
 $MOUNT_PATH=""
+$USER_PATH=""
 if($args[0] -Match "t"){
     $MOUNT_PATH = Path-For-Docker-Toolbox -Path ${pwd}
+    $USER_PATH = Path-For-Docker-Toolbox -Path $env:USERPROFILE
 }else{
     $MOUNT_PATH = Path-For-Docker -Path ${pwd}
+    $USER_PATH = Path-For-Docker -Path $env:USERPROFILE
 }
 
-$MOUNT_PATH = Path-For-Docker -Path ${pwd}
-$USER_PATH = Path-For-Docker -Path $env:USERPROFILE
 #https://hub.docker.com/_/maven#reusing-the-maven-local-repository
 $VOLUME_M2_PATH="${USER_PATH}/.m2:/root/.m2"
 #https://hub.docker.com/_/maven#how-to-use-this-image
@@ -60,7 +61,9 @@ if(($args[0] -Match "b") -Or ${docker images -q swe-server}){
     Write-Output "BUILD react application"
     Write-Output "------------------------------------------------------------------------"
     # why --no-bin-links is required https://forums.docker.com/t/symlinks-on-shared-volumes-not-supported/9288/3
-    docker run -it -e NODE_ENV=production -v $VOLUME_NODE node:alpine /bin/sh -c "cp -r /home/node /home/work && cd /home/work && npm install --no-bin-links && npm run build && cp -Lrf /home/work /home/node && cd .. && rm -rf /home/work && ls"
+    
+    # didn't find a fix for compiling yet
+    #docker run -it -e NODE_ENV=production -v $VOLUME_NODE stefanscherer/node-windows:10-build-tools /bin/sh -c "cp -r /home/node /home/work && cd /home/work && npm install --no-bin-links && npm run build && cp -Lrf /home/work /home/node && cd .. && rm -rf /home/work && ls"
 }
 
 
