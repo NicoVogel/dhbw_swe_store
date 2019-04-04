@@ -11,11 +11,9 @@ class Table extends Component {
     let header;
     if (tableData.length !== 0) {
       const headerList = Object.keys(tableData[0]);
-      header = headerList.map((columnTitle) => {
-        if (columnTitle !== '_links') {
-          return <th>{headerStrings.get(columnTitle)}</th>;
-        } return null;
-      });
+      header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
+        <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
+      ));
     }
 
     return (
@@ -23,8 +21,8 @@ class Table extends Component {
         <table>
           {tableData.length === 0 ? null : (
             <thead>
-              <tr>
-                <th id="hiddencolumn" />
+              <tr key="header-row">
+                <th id="hiddencolumn" key="header-hidden" />
                 {header}
               </tr>
             </thead>
@@ -33,23 +31,31 @@ class Table extends Component {
 
           <tbody>
             {
-              tableData.map(dataObject => (
-                <tr>
-                  <td id="hiddencolumn" />
-                  {
-                    // TODO change defaultValue to value nad set change handler
-                    Object.keys(dataObject).filter(key => key !== '_links').map((key) => {
-                      return <td><input className="input-field" type="text" key={`${key}`} defaultValue={dataObject[key]} /></td>;
-                    })
-                  }
-                </tr>
-              ))
+              tableData.map((dataObject) => {
+                const productID = dataObject._links.self.href.slice(-1);
+
+                return (
+                  <tr key={productID}>
+                    <td id="hiddencolumn" key={`${productID}-hidden`} />
+                    {
+                      // TODO change defaultValue to value nad set change handler
+                      Object.keys(dataObject).filter(key => key !== '_links').map((key) => {
+                        return (
+                          <td key={`${productID}-${key}`}>
+                            <input className="input-field" type="text" key={`${productID}_${key}_input`} defaultValue={dataObject[key]} />
+                          </td>
+                        );
+                      })
+                    }
+                  </tr>
+                );
+              })
             }
-            <tr>
-              <td id="hiddencolumn">
-                <button id="addbutton" type="submit">+</button>
+            <tr key="add-row">
+              <td id="hiddencolumn" key="add-hidden">
+                <button id="addbutton" type="submit" key="add-button">+</button>
               </td>
-              {defaultTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={headerStrings.get(item)} /></td>)}
+              {defaultTableHeaders.map((item, index) => <td key={`add-${index}`}><input className="input-field" type="text" key={`add-${index}-input`} placeholder={headerStrings.get(item) } /></td>)}
             </tr>
           </tbody>
         </table>
