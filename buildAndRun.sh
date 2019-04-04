@@ -1,8 +1,9 @@
-#!/bin/besh
+#!/bin/sh
 
 MOUNT_PATH=`pwd`
+USER_HOME=`eval echo ~$USER`
 #https://hub.docker.com/_/maven#reusing-the-maven-local-repository
-VOLUME_M2_PATH="~/.m2:/root/.m2"
+VOLUME_M2_PATH="$USER_HOME/.m2:/root/.m2"
 #https://hub.docker.com/_/maven#how-to-use-this-image
 VOLUME_PROJECT="$MOUNT_PATH/dhbw_swe_server:/usr/src/mymaven"
 VOLUME_NODE="$MOUNT_PATH/dhbw_swe_react:/home/node"
