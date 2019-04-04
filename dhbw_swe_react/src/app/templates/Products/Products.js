@@ -29,7 +29,7 @@ class Products extends Component {
     const defaultTableHeaders = ['count', 'description', 'category', 'sellPrice', 'buyPrice', 'supplier', 'origin', 'buyDate'];
 
     const {
-      productList, isLoaded
+      productList, isLoaded,
     } = this.state;
     return (
       <div className="products-container">
