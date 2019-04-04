@@ -22,8 +22,10 @@ class Table extends Component {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
+   // ID of the row in the database, needed for update ! 
+   const elementID = parseInt(event.target.id.split('_')[2]);
+   
    const newValue = event.target.value;
-   console.log(this.state.currentCategory);
     
     this.setState(state => {
       // create new table where the change is added
@@ -93,7 +95,7 @@ class Table extends Component {
                         <td key={`${elementID}-${key}`}>
                         <form>
 
-                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}`} onChange={this.changeHandler} />
+                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}_${elementID}`} onChange={this.changeHandler} />
                         </form>
                         </td>
                       ))
