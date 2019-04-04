@@ -12,7 +12,6 @@ class Table extends Component {
     if (tableData.length !== 0) {
       const headerList = Object.keys(tableData[0]);
       header = headerList.map((columnTitle) => {
-        console.log(columnTitle);
         if (columnTitle !== '_links') {
           return <th>{headerStrings.get(columnTitle)}</th>;
         } return null;
@@ -22,12 +21,15 @@ class Table extends Component {
     return (
       <div className="table-container">
         <table>
-          <thead>
-            <tr>
-              <th id="hiddencolumn" />
-              {header}
-            </tr>
-          </thead>
+          {tableData.length === 0 ? null : (
+            <thead>
+              <tr>
+                <th id="hiddencolumn" />
+                {header}
+              </tr>
+            </thead>
+          )
+          }
 
           <tbody>
             {
@@ -49,7 +51,7 @@ class Table extends Component {
               <td id="hiddencolumn">
                 <button id="addbutton" type="submit">+</button>
               </td>
-              {defaultTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
+              {defaultTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={headerStrings.get(item)} /></td>)}
             </tr>
           </tbody>
         </table>
