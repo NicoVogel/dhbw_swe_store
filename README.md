@@ -1,23 +1,26 @@
 
 # Requirements
 
-- Maven 3.x
-- JDK 1.8
 - docker running with exposed deamon on tcp without TLS
 
 # Start Server
 
-Open a shell in the *DHBW_SWE_Server* folder and execute the following command to build the docker image
+Open a shell in the checkout repository and execute the following command:
 
 ````shell
-mvn install dockerfile:build
+./buildAndRun.sh
 ````
 
-Then use docker-compose in the folder above to start the database and spring server
+This will build the development version of the project.
+By adding *prod* as the first parameter, the production version is started.
 
 ````shell
-docker-compose up
+./buildAndRun.sh prod
 ````
+
+This requires the following Environment variable to work and a certificate at */crt/certificate.pfx* with the given name.
+
+- SSL_KEY_STORE_PASSWORD: password for the ssl certificate
 
 # Postman
 
