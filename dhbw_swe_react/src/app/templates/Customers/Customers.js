@@ -24,17 +24,7 @@ class Customers extends Component {
   }
 
   render() {
-    const productTableHeaders = [
-      {
-        id: 'name',
-        text: 'Name',
-      },
-      {
-        id: 'address',
-        text: 'Adresse',
-      },
-
-    ];
+    const defaultTableHeaders = ['name', 'address'];
     const {
       customerList,
     } = this.state;
@@ -43,8 +33,8 @@ class Customers extends Component {
         <Headline text="Kundenübersicht" />
         <div className="table-container">
           <Table
-            mockTableHeaders={
-              productTableHeaders
+            defaultTableHeaders={
+              defaultTableHeaders
             }
             tableData={
               customerList

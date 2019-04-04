@@ -4,32 +4,23 @@ import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
 
 class Suppliers extends Component {
-    state = {  }
-    render() { 
+  render() {
+    const defaultTableHeaders = ['name', 'address'];
 
-        const suppliersTableHeaders = [
-            {
-                text: 'Name'
-            },
-            {
-                text: 'Adresse'
-            }
-        ];
+    const suppliersList = [
+      {
+        name: 'Müller GmbH',
+        address: '012546 Stuttgart Wiesenstraße 128',
+      },
+    ];
 
-        const suppliersList = [
-            {
-                name: 'Müller GmbH',
-                addresse: '012546 Stuttgart Wiesenstraße 128'
-            }
-        ];
-
-        return ( 
-            <div>
-            <Headline text='Lieferanten'/>
-            <Table mockTableHeaders={suppliersTableHeaders} tableData={suppliersList} />
-            </div>
-        );
-    }
+    return (
+      <div>
+        <Headline text="Lieferanten" />
+        <Table defaultTableHeaders={defaultTableHeaders} tableData={suppliersList} />
+      </div>
+    );
+  }
 }
- 
+
 export default Suppliers;

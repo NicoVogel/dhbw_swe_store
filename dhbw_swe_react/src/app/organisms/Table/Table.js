@@ -6,7 +6,7 @@ import headerStrings from '../../templates/Resources';
 // eslint-disable-next-line react/prefer-stateless-function
 class Table extends Component {
   render() {
-    const { mockTableHeaders, tableData, mockTableData } = this.props;
+    const { defaultTableHeaders, tableData } = this.props;
 
     let header;
     if (tableData.length !== 0) {
@@ -49,7 +49,7 @@ class Table extends Component {
               <td id="hiddencolumn">
                 <button id="addbutton" type="submit">+</button>
               </td>
-              {mockTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
+              {defaultTableHeaders.map(item => <td><input className="input-field" type="text" placeholder={item.text} /></td>)}
             </tr>
           </tbody>
         </table>
