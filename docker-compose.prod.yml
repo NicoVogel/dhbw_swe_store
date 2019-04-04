@@ -9,3 +9,7 @@ services:
     - SSL_KEY_STORE_PASSWORD
     volumes:
     - /crt:/crt
+
+  psql:
+    volumes:
+    - ./pgdata:/var/lib/postgresql/data
