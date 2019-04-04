@@ -26,7 +26,7 @@ class Suppliers extends Component {
         return ( 
             <div>
             <Headline text='Lieferanten'/>
-            <Table tableHeaders={suppliersTableHeaders} tableData={suppliersList} />
+            <Table mockTableHeaders={suppliersTableHeaders} tableData={suppliersList} />
             </div>
         );
     }

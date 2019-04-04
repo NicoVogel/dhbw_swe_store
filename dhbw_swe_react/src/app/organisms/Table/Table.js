@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import './Table.scss';
+import headerStrings from '../../templates/Resources';
 
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
 class Table extends Component {
   render() {
     const { mockTableHeaders, tableData, mockTableData } = this.props;
-    
+
     let header;
     if (tableData.length !== 0) {
       const headerList = Object.keys(tableData[0]);
-      header = headerList.map(columnTitle => <th>{columnTitle}</th>);
+      header = headerList.map((columnTitle) => {
+        console.log(columnTitle);
+        if (columnTitle !== '_links') {
+          return <th>{headerStrings.get(columnTitle)}</th>;
+        } return null;
+      });
     }
 
     return (
