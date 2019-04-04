@@ -6,6 +6,18 @@ import headerStrings from '../../templates/Resources';
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
 class Table extends Component {
+
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     rows: [],
+  //   }
+  // }
+
+  // changeHandler = event => {
+  //   console.log(event);
+  // }
+
   render() {
     const { defaultTableHeaders, tableData } = this.props;
 
