@@ -26,8 +26,7 @@ echo "\n\n\n"
 echo "------------------------------------------------------------------------"
 echo "START server and database"
 echo "\n"
-if [[ $1 -eq "prod" ]]
-then
+if [ $1 == "prod" ]; then
     echo "ENV: Production"
     echo "------------------------------------------------------------------------"
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
