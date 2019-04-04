@@ -19,8 +19,6 @@ services:
     - POSTGRES_PASSWORD=admin
     - POSTGRES_USER=admin
     - POSTGRES_DB=store
-    #volumes:
-    #- ./pgdata:/var/lib/postgresql/data
     networks:
     - backend
 networks: 
