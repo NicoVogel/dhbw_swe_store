@@ -5,6 +5,7 @@ import { SERVER_ADDRESS, REST_PRODUCT } from '../Resources';
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
 
+const axios = require('axios');
 
 class Products extends Component {
   constructor() {
@@ -17,19 +18,18 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    fetch(`${SERVER_ADDRESS}${REST_PRODUCT}`)
+    axios.get(`${SERVER_ADDRESS}${REST_PRODUCT}`)
       .then((results) => {
-        if (!results.ok) {
+        if (results.status === 200) {
           this.setState({
-            errorMsg: `ERROR: HTTP status: ${results.status}`,
+            productList: results.data._embedded.product,
+            isLoaded: true,
           });
-          return {};
         }
-        return results.json().then((data) => {
-          this.setState({
-            productList: data._embedded.product,
-            isLoaded: results.ok,
-          });
+      })
+      .catch((error) => {
+        this.setState({
+          errorMsg: `${error}`,
         });
       });
   }

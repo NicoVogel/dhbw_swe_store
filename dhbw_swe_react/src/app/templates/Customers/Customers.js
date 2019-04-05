@@ -5,6 +5,8 @@ import { SERVER_ADDRESS, REST_CUSTOMER } from '../Resources';
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
 
+const axios = require('axios');
+
 class Customers extends Component {
   constructor() {
     super();
@@ -16,19 +18,18 @@ class Customers extends Component {
   }
 
   componentDidMount() {
-    fetch(`${SERVER_ADDRESS}${REST_CUSTOMER}`)
+    axios.get(`${SERVER_ADDRESS}${REST_CUSTOMER}`)
       .then((results) => {
-        if (!results.ok) {
+        if (results.status === 200) {
           this.setState({
-            errorMsg: `ERROR: HTTP status: ${results.status}`,
+            customerList: results.data._embedded.customer,
+            isLoaded: true,
           });
-          return {};
         }
-        return results.json().then((data) => {
-          this.setState({
-            customerList: data._embedded.customer,
-            isLoaded: results.ok,
-          });
+      })
+      .catch((error) => {
+        this.setState({
+          errorMsg: `${error}`,
         });
       });
   }
