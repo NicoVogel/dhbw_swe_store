@@ -91,47 +91,61 @@ class Table extends Component {
       <div className="table-container">
         {isLoaded
           ? (
-<table>
-          {this.state.tableData.length === 0 ? null : (
-            <thead>
-              <tr key="header-row">
-                <th id="hiddencolumn" key="header-hidden" />
-                {header}
-              </tr>
-            </thead>
-          )
-          }
-
-          <tbody>
-            {
-              this.state.tableData.map((dataObject, rowIndex) => {
-                const elementID = `element-${dataObject._links.self.href.slice(-1)}`;
-
-                return (
-                  <tr key={elementID}>
-                    <td id="hiddencolumn" key={`${elementID}-hidden`} />
-                    {
-                      Object.keys(dataObject).filter(key => key !== '_links').map(key => (
-                        <td key={`${elementID}-${key}`}>
-                        <form>
-
-                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}`} onChange={this.changeHandler} />
-                        </form>
-                        </td>
-                      ))
-                    }
-                  </tr>
-                );
-              })
+          <table>
+            {this.state.tableData.length === 0 ? null : (
+              <thead>
+                <tr key="header-row">
+                  <th id="hiddencolumn" key="header-hidden" />
+                  {header}
+                </tr>
+              </thead>
+            )
             }
-            <tr key="add-row">
-              <td id="hiddencolumn" key="add-hidden">
-                <button id="addbutton" type="submit" key="add-button">+</button>
-              </td>
-              {this.state.defaultTableHeaders.map((item, index) => <td key={`add-${index}`}><input className="input-field" type="text" key={`add-${index}-input`} placeholder={headerStrings.get(item)} /></td>)}
-            </tr>
-          </tbody>
-        </table>
+
+            <tbody>
+              {
+                this.state.tableData.map((dataObject, rowIndex) => {
+                  const elementID = `element-${dataObject._links.self.href.slice(-1)}`;
+
+                  return (
+                    <tr key={elementID}>
+                      <td id="hiddencolumn" key={`${elementID}-hidden`} />
+                      {
+                        Object.keys(dataObject).filter(key => key !== '_links').map(key => (
+                          <td key={`${elementID}-${key}`}>
+                          <form>
+
+                            <input 
+                            className="input-field" 
+                            type="text" 
+                            key={`${elementID}-${key}-input`} 
+                            value={dataObject[key]} 
+                            id={`${rowIndex}_${key}`} 
+                            onChange={this.changeHandler} />
+
+                          </form>
+                          </td>
+                        ))
+                      }
+                    </tr>
+                  );
+                })
+              }
+              <tr key="add-row">
+                <td id="hiddencolumn" key="add-hidden">
+                  <button id="addbutton" type="submit" key="add-button">+</button>
+                </td>
+                {this.state.defaultTableHeaders.map((item, index) => 
+                  <td key={`add-${index}`}>
+                    <input 
+                      className="input-field" 
+                      type="text" 
+                      key={`add-${index}-input`} 
+                      placeholder={headerStrings.get(item)} />
+                  </td>)}
+              </tr>
+            </tbody>
+          </table>
           )
           : [
             errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
