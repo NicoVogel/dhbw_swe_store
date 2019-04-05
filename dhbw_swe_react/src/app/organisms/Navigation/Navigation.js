@@ -16,7 +16,7 @@ class Navigation extends Component {
     menuOpen: false,
   };
   toggle = () => {
-    this.setState( {
+    this.setState({
       menuOpen: !this.state.menuOpen
     })
   }
@@ -25,36 +25,36 @@ class Navigation extends Component {
       <div className={`navigation ${this.state.menuOpen ? "" : " open"}`} >
         <div className="nav-item top">
           {
-            this.state.menuOpen ? <NavLink className='title'>H</NavLink> : < NavLink className = "title"
-            to = "/home" > Heinz Zitrus </NavLink>
+            this.state.menuOpen ? <NavLink className='title'>H</NavLink> : < NavLink className="title"
+              to="/home" > Heinz Zitrus </NavLink>
           }
           {
-            this.state.menuOpen ? < FontAwesomeIcon onClick = {
+            this.state.menuOpen ? < FontAwesomeIcon onClick={
               this.toggle
             }
-            className = 'icon nav-back'
-            icon = "angle-right" / >: < FontAwesomeIcon onClick = {
-              this.toggle
-            }
-            className = 'icon nav-back'
-            icon = "angle-left" / >
+              className='icon nav-back'
+              icon="angle-right" /> : < FontAwesomeIcon onClick={
+                this.toggle
+              }
+                className='icon nav-back'
+                icon="angle-left" />
           }
         </div>
         <div className="nav-item center">
           <div className="items-container">
-            <NavLink className="nav-link" to="/products">
+            <NavLink className="nav-link" to="/product">
               <FontAwesomeIcon icon="seedling" className="icon" />
-              { this.state.menuOpen ? null : < div className = "text" > Produkte </div>}
+              {this.state.menuOpen ? null : < div className="text" > Produkte </div>}
             </NavLink>
-            <NavLink className="nav-link" to="/producers">
+            <NavLink className="nav-link" to="/producer">
               <FontAwesomeIcon icon="industry" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Hersteller </div>}
             </NavLink>
-            <NavLink className="nav-link" to="/suppliers">
+            <NavLink className="nav-link" to="/supplier">
               <FontAwesomeIcon icon="truck" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Lieferanten </div>}
             </NavLink>
-            <NavLink className="nav-link" to="/customers">
+            <NavLink className="nav-link" to="/customer">
               <FontAwesomeIcon icon="users" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Kunden </div>}
             </NavLink>
@@ -67,16 +67,16 @@ class Navigation extends Component {
               <FontAwesomeIcon icon="search" className="icon" />
               {this.state.menuOpen ? null : < div className="text" > Suche </div>}
             </NavLink>
-            
+
           </div>
         </div>
         <div className="nav-item bottom">
-          <NavLink className="nav-link" to="/settings">
+          <NavLink className="nav-link" to="/setting">
             <FontAwesomeIcon icon="cog" className="icon" />
             {this.state.menuOpen ? null : < div className="text" > Einstellungen </div>}
           </NavLink>
         </div>
-        
+
       </div>
     );
   }
