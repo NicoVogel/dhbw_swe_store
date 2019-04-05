@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import './Table.scss';
-import { headerStrings } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
 
 const axios = require('axios');
 
@@ -17,12 +17,34 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    const { defaultTableHeaders, tableData, category } = this.props;
+    const { defaultTableHeaders, category } = this.props;
     this.state = {
       defaultTableHeaders,
-      tableData,
       category,
+      tableData: [],
+      isLoaded: false,
+      errorMsg: '',
     }
+  }
+
+  componentDidMount() {
+    const { category } = this.state;
+    axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
+      .then((results) => {
+        if (results.status === 200) {
+          this.setState({
+            ...this.state,
+            tableData: results.data._embedded[category],
+            isLoaded: true,
+          });
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          ...this.state,
+          errorMsg: `${error}`,
+        });
+      });
   }
 
   changeHandler = event => {
@@ -51,6 +73,10 @@ class Table extends Component {
   }
 
   render() {
+
+    const {
+      isLoaded, errorMsg,
+    } = this.state;
     let header;
 
     if(this.state.tableData.length !== 0){
@@ -63,7 +89,9 @@ class Table extends Component {
 
     return (
       <div className="table-container">
-        <table>
+        {isLoaded
+          ? (
+<table>
           {this.state.tableData.length === 0 ? null : (
             <thead>
               <tr key="header-row">
@@ -83,7 +111,6 @@ class Table extends Component {
                   <tr key={elementID}>
                     <td id="hiddencolumn" key={`${elementID}-hidden`} />
                     {
-                      // TODO change defaultValue to value nad set change handler
                       Object.keys(dataObject).filter(key => key !== '_links').map(key => (
                         <td key={`${elementID}-${key}`}>
                         <form>
@@ -105,6 +132,13 @@ class Table extends Component {
             </tr>
           </tbody>
         </table>
+          )
+          : [
+            errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
+          ]
+        }
+        
+        
       </div>
     );
   }
