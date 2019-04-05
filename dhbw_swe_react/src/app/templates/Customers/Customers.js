@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Customer.scss';
-import { SERVER_ADDRESS, REST_CUSTOMER } from '../Resources';
+import { SERVER_ADDRESS, REST_LINKS } from '../Resources';
 
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
@@ -11,18 +11,20 @@ class Customers extends Component {
   constructor() {
     super();
     this.state = {
-      customerList: [],
+      category: 'customer',
+      tableData: [],
       isLoaded: false,
       errorMsg: '',
     };
   }
 
   componentDidMount() {
-    axios.get(`${SERVER_ADDRESS}${REST_CUSTOMER}`)
+    const { category } = this.state;
+    axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
         if (results.status === 200) {
           this.setState({
-            customerList: results.data._embedded.customer,
+            tableData: results.data._embedded[category],
             isLoaded: true,
           });
         }
@@ -37,7 +39,7 @@ class Customers extends Component {
   render() {
     const defaultTableHeaders = ['name', 'address'];
     const {
-      customerList, isLoaded, errorMsg,
+      tableData, isLoaded, errorMsg, category,
     } = this.state;
     return (
       <div className="customer-container">
@@ -50,8 +52,11 @@ class Customers extends Component {
                 defaultTableHeaders
               }
                 tableData={
-                customerList
+                  tableData
               }
+                category={
+                  category
+                }
               />
             )
             : [

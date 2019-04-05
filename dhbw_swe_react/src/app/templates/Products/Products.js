@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Products.scss';
-import { SERVER_ADDRESS, REST_PRODUCT } from '../Resources';
+import { SERVER_ADDRESS, REST_LINKS } from '../Resources';
 
 import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
@@ -11,18 +11,20 @@ class Products extends Component {
   constructor() {
     super();
     this.state = {
-      productList: [],
+      category: 'product',
+      tableData: [],
       isLoaded: false,
       errorMsg: '',
     };
   }
 
   componentDidMount() {
-    axios.get(`${SERVER_ADDRESS}${REST_PRODUCT}`)
+    const { category } = this.state;
+    axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
         if (results.status === 200) {
           this.setState({
-            productList: results.data._embedded.product,
+            tableData: results.data._embedded[category],
             isLoaded: true,
           });
         }
@@ -38,7 +40,7 @@ class Products extends Component {
     const defaultTableHeaders = ['count', 'description', 'category', 'sellPrice', 'buyPrice', 'supplier', 'origin', 'buyDate'];
 
     const {
-      productList, isLoaded, errorMsg,
+      tableData, isLoaded, errorMsg, category,
     } = this.state;
     return (
       <div className="products-container">
@@ -51,8 +53,11 @@ class Products extends Component {
                 defaultTableHeaders
               }
                 tableData={
-                productList
+                  tableData
               }
+                category={
+                  category
+                }
               />
             )
             : [

@@ -1,7 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import './Table.scss';
-import headerStrings from '../../templates/Resources';
+import { SERVER_ADDRESS, headerStrings } from '../../templates/Resources';
+
+const axios = require('axios');
 
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
@@ -9,12 +11,11 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    const { defaultTableHeaders, tableData } = this.props;
-    let currentCategory = '';
+    const { defaultTableHeaders, tableData, category } = this.props;
     this.state = {
       defaultTableHeaders,
       tableData,
-      currentCategory,
+      category,
     }
   }
 
@@ -36,26 +37,26 @@ class Table extends Component {
         } 
       return row;
      });
-
      // only touch tableData, the rest remains original
      return {
        ...this.state,
        tableData,
      }
    });
-
+  //  axios.put(`${SERVER_ADDRESS}`)
+   console.log(this.state.category);
   }
 
   componentDidMount() {
     // TODO: calling component/category should identify itself to Table, instead of parsing it through response
     // this will not work if the database is empty initially!
 
-    if(this.state.tableData.length !== 0){
-      this.setState({
-        ...this.state,
-        currentCategory: Object.keys(this.state.tableData[0]._links).filter(elem => elem !== 'self')[0],
-      });
-    }
+    // if(this.state.tableData.length !== 0){
+    //   this.setState({
+    //     ...this.state,
+    //     currentCategory: Object.keys(this.state.tableData[0]._links).filter(elem => elem !== 'self')[0],
+    //   });
+    // }
   }
   render() {
     let header;
