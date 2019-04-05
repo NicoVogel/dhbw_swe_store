@@ -11,16 +11,25 @@ class Products extends Component {
     super();
     this.state = {
       productList: [],
+      isLoaded: false,
+      errorMsg: '',
     };
   }
 
   componentDidMount() {
     fetch(`${SERVER_ADDRESS}${REST_PRODUCT}`)
-      .then(results => results.json())
-      .then((data) => {
-        this.setState({
-          productList: data._embedded.product,
-          isLoaded: true,
+      .then((results) => {
+        if (!results.ok) {
+          this.setState({
+            errorMsg: `ERROR: HTTP status: ${results.status}`,
+          });
+          return {};
+        }
+        return results.json().then((data) => {
+          this.setState({
+            productList: data._embedded.product,
+            isLoaded: results.ok,
+          });
         });
       });
   }
@@ -29,21 +38,26 @@ class Products extends Component {
     const defaultTableHeaders = ['count', 'description', 'category', 'sellPrice', 'buyPrice', 'supplier', 'origin', 'buyDate'];
 
     const {
-      productList, isLoaded,
+      productList, isLoaded, errorMsg,
     } = this.state;
     return (
       <div className="products-container">
         <Headline text="Produktübersicht" />
         <div className="table-container">
-          {isLoaded ? 
-          <Table
-            defaultTableHeaders={
-              defaultTableHeaders
-            }
-            tableData={
-              productList
-            }
-          /> : <h1>LOADING</h1>
+          {isLoaded
+            ? (
+              <Table
+                defaultTableHeaders={
+                defaultTableHeaders
+              }
+                tableData={
+                productList
+              }
+              />
+            )
+            : [
+              errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
+            ]
           }
         </div>
       </div>

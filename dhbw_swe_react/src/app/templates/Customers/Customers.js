@@ -10,16 +10,25 @@ class Customers extends Component {
     super();
     this.state = {
       customerList: [],
+      isLoaded: false,
+      errorMsg: '',
     };
   }
 
   componentDidMount() {
     fetch(`${SERVER_ADDRESS}${REST_CUSTOMER}`)
-      .then(results => results.json())
-      .then((data) => {
-        this.setState({
+      .then((results) => {
+        if (!results.ok) {
+          this.setState({
+            errorMsg: `ERROR: HTTP status: ${results.status}`,
+          });
+          return {};
+        }
+        return results.json().then((data) => {
+          this.setState({
             customerList: data._embedded.customer,
-          isLoaded: true,
+            isLoaded: results.ok,
+          });
         });
       });
   }
@@ -27,22 +36,27 @@ class Customers extends Component {
   render() {
     const defaultTableHeaders = ['name', 'address'];
     const {
-      customerList, isLoaded
+      customerList, isLoaded, errorMsg,
     } = this.state;
     return (
       <div className="customer-container">
         <Headline text="Kundenübersicht" />
         <div className="table-container">
-          {isLoaded 
-            ? <Table
-              defaultTableHeaders={
+          {isLoaded
+            ? (
+              <Table
+                defaultTableHeaders={
                 defaultTableHeaders
               }
-              tableData={
+                tableData={
                 customerList
-              }/> 
-            : <h1>LOADING</h1>
-            }
+              }
+              />
+            )
+            : [
+              errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
+            ]
+          }
         </div>
       </div>
     );
