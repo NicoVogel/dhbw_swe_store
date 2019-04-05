@@ -23,13 +23,13 @@ class App extends Component {
           <div className="switch-wrapper">
             <Switch className="flex-item">
               <Route path="/home" component={Home} exact />
-              <Route path="/products" component={Products} />
-              <Route path="/producers" component={Producers} />
-              <Route path="/suppliers" component={Suppliers} />
-              <Route path="/customers" component={Customers} />
+              <Route path="/product" component={Products} />
+              <Route path="/producer" component={Producers} />
+              <Route path="/supplier" component={Suppliers} />
+              <Route path="/customer" component={Customers} />
               <Route path="/deliverynote" component={Deliverynote} />
               <Route path="/search" component={Search} />
-              <Route path="/settings" component={Settings} />
+              <Route path="/setting" component={Settings} />
               <Route component={Error} />
             </Switch>
           </div>
