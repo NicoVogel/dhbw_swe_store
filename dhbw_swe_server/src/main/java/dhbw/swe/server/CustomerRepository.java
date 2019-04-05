@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin
-@RepositoryRestResource(collectionResourceRel = "kunde", path="kunde")
+@RepositoryRestResource(collectionResourceRel = "customer", path="customer")
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Integer>{
 
 }

@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin
-@RepositoryRestResource(collectionResourceRel = "produkt", path="produkt")
+@RepositoryRestResource(collectionResourceRel = "product", path="product")
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>{
 
 }
