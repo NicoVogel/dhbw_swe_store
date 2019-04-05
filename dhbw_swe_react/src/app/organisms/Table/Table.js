@@ -47,7 +47,10 @@ class Table extends Component {
       });
   }
 
-  changeHandler = event => {
+  changeHandler = (event) => {
+    // TODO
+  }
+  keyUpHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
@@ -119,9 +122,10 @@ class Table extends Component {
                             className="input-field" 
                             type="text" 
                             key={`${elementID}-${key}-input`} 
-                            value={dataObject[key]} 
-                            id={`${rowIndex}_${key}`} 
-                            onChange={this.changeHandler} />
+                            defaultValue={dataObject[key]} 
+                            id={`${rowIndex}_${key}`}
+                            onChange={this.changeHandler}
+                            onBlur={this.keyUpHandler} />
 
                           </form>
                           </td>
