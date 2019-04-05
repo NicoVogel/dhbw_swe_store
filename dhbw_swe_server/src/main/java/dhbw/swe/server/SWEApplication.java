@@ -30,7 +30,7 @@ public class SWEApplication {
 		log.info(Arrays.toString(env.getDefaultProfiles()));
 	}
 	
-	@RequestMapping(value = {"/","/products","/producers","/suppliers", "/customers", "/deliverynote", "/search", "/settings"})
+	@RequestMapping(value = {"/product","/producer","/supplier", "/customer", "/deliverynote", "/search", "/setting"})
     public String index() {
         return "index";
     }
