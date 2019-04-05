@@ -1,12 +1,18 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import './Table.scss';
-import { SERVER_ADDRESS, headerStrings } from '../../templates/Resources';
+import { headerStrings } from '../../templates/Resources';
 
 const axios = require('axios');
 
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
+function updateRow(row) {
+   axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
+      .then(results => console.log(results))
+      .catch(error => console.log(error));
+}
+
 class Table extends Component {
 
   constructor(props) {
@@ -23,8 +29,6 @@ class Table extends Component {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
-   // ID of the row in the database, needed for update ! 
-   const elementID = parseInt(event.target.id.split('_')[2]);
    
    const newValue = event.target.value;
     
@@ -34,6 +38,7 @@ class Table extends Component {
        if(rowIndex===rowLine) {
          // change the value at the right spot
          row[columnKey] = newValue;      
+         updateRow(row);
         } 
       return row;
      });
@@ -43,8 +48,6 @@ class Table extends Component {
        tableData,
      }
    });
-  //  axios.put(`${SERVER_ADDRESS}`)
-   console.log(this.state.category);
   }
 
   render() {
@@ -85,7 +88,7 @@ class Table extends Component {
                         <td key={`${elementID}-${key}`}>
                         <form>
 
-                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}_${elementID}`} onChange={this.changeHandler} />
+                          <input className="input-field" type="text" key={`${elementID}-${key}-input`} value={dataObject[key]} id={`${rowIndex}_${key}`} onChange={this.changeHandler} />
                         </form>
                         </td>
                       ))
