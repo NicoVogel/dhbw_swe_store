@@ -1,5 +1,9 @@
 @import '../../../styles/defines';
 
+.table-container {
+    padding-top: 50px;
+}
+
 Table {
     border-collapse: collapse;
     width: 100%;
@@ -33,6 +37,11 @@ Table th {
     outline: none;
     width: 100%;
     height: 100%;
+}
+
+.in-edit {
+    font-style: italic;
+    color: $color-main;
 }
 
 Table #hiddencolumn {

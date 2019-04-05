@@ -24,6 +24,7 @@ class Table extends Component {
       tableData: [],
       isLoaded: false,
       errorMsg: '',
+      inEdit: false,
     }
   }
 
@@ -47,10 +48,18 @@ class Table extends Component {
       });
   }
 
+  focusHandler = (event) => {
+    this.setState({
+      ...this.state,
+      inEdit: true,
+    });
+  }
+
   changeHandler = (event) => {
     // TODO
   }
-  keyUpHandler = event => {
+
+  blurHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
@@ -71,6 +80,7 @@ class Table extends Component {
      return {
        ...this.state,
        tableData,
+       inEdit: false,
      }
    });
   }
@@ -78,7 +88,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg,
+      isLoaded, errorMsg
     } = this.state;
     let header;
 
@@ -119,13 +129,14 @@ class Table extends Component {
                           <form>
 
                             <input 
-                            className="input-field" 
+                            className={`input-field ${this.state.inEdit ? 'in-edit': ''}`}
                             type="text" 
                             key={`${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
                             id={`${rowIndex}_${key}`}
                             onChange={this.changeHandler}
-                            onBlur={this.keyUpHandler} />
+                            onBlur={this.blurHandler} 
+                            onFocus={this.focusHandler} />
 
                           </form>
                           </td>
