@@ -1,18 +1,20 @@
 package dhbw.swe.server;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import lombok.extern.slf4j.Slf4j;
 
-
-@Slf4j
 @Configuration
-public class RoutingConfig {
+public class RoutingConfig implements WebMvcConfigurer {
 
-	@RequestMapping(value = {"/product","/producer","/supplier", "/customer", "/deliverynote", "/search", "/setting"})
-    public String index() {
-		log.info("changed routing");   
-		return "index";
-    }
+	@Override
+	  public void addViewControllers(ViewControllerRegistry registry) {
+	      registry.addViewController("/{spring:\\w+}")
+	            .setViewName("forward:/");
+	      registry.addViewController("/**/{spring:\\w+}")
+	            .setViewName("forward:/");
+	      registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}")
+	            .setViewName("forward:/");
+	  }
 }
