@@ -18,7 +18,7 @@ class Customers extends Component {
       .then(results => results.json())
       .then((data) => {
         this.setState({
-          customerList: data._embedded.kunde,
+            customerList: data._embedded.customer,
           isLoaded: true,
         });
       });

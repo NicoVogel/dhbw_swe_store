@@ -19,7 +19,7 @@ class Products extends Component {
       .then(results => results.json())
       .then((data) => {
         this.setState({
-          productList: data._embedded.produkt,
+          productList: data._embedded.product,
           isLoaded: true,
         });
       });
