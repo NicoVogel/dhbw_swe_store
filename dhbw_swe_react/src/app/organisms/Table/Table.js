@@ -71,8 +71,10 @@ class Table extends Component {
      const tableData = state.tableData.map((row, rowIndex) => {
        if(rowIndex===rowLine) {
          // change the value at the right spot
-         row[columnKey] = newValue;      
-         updateRow(row);
+         if (row[columnKey] !== newValue) {
+           row[columnKey] = newValue;      
+           updateRow(row);
+          }
         } 
       return row;
      });
