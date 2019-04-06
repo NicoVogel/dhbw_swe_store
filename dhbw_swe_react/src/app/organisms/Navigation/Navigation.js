@@ -25,7 +25,7 @@ class Navigation extends Component {
       <div className={`navigation ${this.state.menuOpen ? "" : " open"}`} >
         <div className="nav-item top">
           {
-            this.state.menuOpen ? <NavLink className='title'>H</NavLink> : < NavLink className="title"
+            this.state.menuOpen ? <NavLink className='title'  to="/home">H</NavLink> : < NavLink className="title"
               to="/home" > Heinz Zitrus </NavLink>
           }
           {
