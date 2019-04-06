@@ -61,7 +61,7 @@ class Table extends Component {
   // ----------------------------------------------------
   /* HANDLER */
 
-  blurAddElementHandler = (event) => {
+  onChangeAddElementHandler = (event) => {
 
     this.setState({
       ...this.state,
@@ -78,18 +78,18 @@ class Table extends Component {
     // this.getTableData();
   }
 
-  focusHandler = (event) => {
+  changeHandler = (event) => {
+    // TODO
+  }
+
+  onFocusChangeElementHandler = (event) => {
     this.setState({
       ...this.state,
       inEdit: true,
     });
   }
 
-  changeHandler = (event) => {
-    // TODO
-  }
-
-  blurChangeElementHandler = event => {
+  onBlurChangeElementHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
@@ -170,8 +170,8 @@ class Table extends Component {
                             defaultValue={dataObject[key]} 
                             id={`${rowIndex}_${key}`}
                             onChange={this.changeHandler}
-                            onBlur={this.blurChangeElementHandler} 
-                            onFocus={this.focusHandler} />
+                            onBlur={this.onBlurChangeElementHandler} 
+                            onFocus={this.onFocusChangeElementHandler} />
 
                           </form>
                           </td>
@@ -194,8 +194,9 @@ class Table extends Component {
                       id={`${item}`}
                       placeholder={headerStrings.get(item)}
                       defaultValue={this.state.newEntry[item]}
-                      onChange={this.blurAddElementHandler}
-                      onClick={this.testHandler}/>
+                      onChange={this.onChangeAddElementHandler}
+                      // onClick={this.testHandler}
+                      />
                   </td>)}
               </tr>
             </tbody>
