@@ -13,11 +13,20 @@ function updateRow(row) {
       .catch(error => console.log(error));
 }
 
+function postRow(row, category) {
+  axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
+      .then(results => {
+        console.log(results);
+      })
+      .catch(error => console.log(error));
+}
+
 class Table extends Component {
 
   constructor(props) {
     super(props);
     const { defaultTableHeaders, category } = this.props;
+
     let newEntry = {};
     defaultTableHeaders.forEach((headerElem) => {
       newEntry[headerElem] = '';
@@ -29,16 +38,19 @@ class Table extends Component {
       tableData: [],
       isLoaded: false,
       errorMsg: '',
-      inEdit: false,
+      rowInEdit: false,
       newEntry,
     }
   }
 
   componentDidMount() {
-    this.getTableData();
+    // this.getTableData();
+    // this is a workaround as getTableData is not called after postRow *async bullshit* :)
+    this.interval = setInterval(() => this.getTableData(), 1000);
   }
 
   getTableData() {
+    console.log('refresh data');
     const { category } = this.state;
     axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
@@ -70,12 +82,24 @@ class Table extends Component {
         [event.target.id]:event.target.value,
       }
     })
-    console.log(this.state.newEntry);
-
   }
 
-  testHandler = (event) => {
+  onClickAddRowHandler = (event) => {
     // this.getTableData();
+    const missingEntriesCount = Object.keys(this.state.newEntry).filter(key => this.state.newEntry[key].length === 0).length;
+    
+    if(missingEntriesCount === 0) {
+      postRow(this.state.newEntry, this.state.category);
+      let newEntry = {};
+      this.props.defaultTableHeaders.forEach((headerElem) => {
+        newEntry[headerElem] = '';
+      });
+
+      this.setState({
+        ...this.state,
+        newEntry,
+      })
+    } 
   }
 
   changeHandler = (event) => {
@@ -185,7 +209,7 @@ class Table extends Component {
               }
               <tr key="add-row">
                 <td id="hiddencolumn" key="add-hidden">
-                  <button id="addbutton" type="submit" key="add-button">+</button>
+                  <button id="addbutton" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
                 </td>
                 {this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>
@@ -195,9 +219,8 @@ class Table extends Component {
                       key={`add-${index}-input`} 
                       id={`${item}`}
                       placeholder={headerStrings.get(item)}
-                      defaultValue={this.state.newEntry[item]}
+                      value={this.state.newEntry[item]}
                       onChange={this.onChangeAddElementHandler}
-                      // onClick={this.testHandler}
                       />
                   </td>)}
               </tr>
