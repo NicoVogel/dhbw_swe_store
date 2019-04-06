@@ -153,20 +153,22 @@ class Table extends Component {
             <tbody>
               {
                 this.state.tableData.map((dataObject, rowIndex) => {
-                  const elementID = `element-${dataObject._links.self.href.slice(-1)}`;
+                  const selfLinkURL = dataObject._links.self.href;
+                  let elementID = selfLinkURL.split('/');
+                  elementID = elementID[elementID.length-1];
 
                   return (
-                    <tr key={elementID}>
-                      <td id="hiddencolumn" key={`${elementID}-hidden`} />
+                    <tr key={`element-${elementID}`}>
+                      <td id="hiddencolumn" key={`element-${elementID}-hidden`} />
                       {
                         Object.keys(dataObject).filter(key => key !== '_links').map(key => (
-                          <td key={`${elementID}-${key}`}>
+                          <td key={`element-${elementID}-${key}`}>
                           <form>
 
                             <input 
-                            className={`input-field ${this.state.inEdit ? 'in-edit': ''}`}
+                            className={`input-field ${this.state.rowInEdit ? 'in-edit': ''}`}
                             type="text" 
-                            key={`${elementID}-${key}-input`} 
+                            key={`element-${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
                             id={`${rowIndex}_${key}`}
                             onChange={this.changeHandler}
