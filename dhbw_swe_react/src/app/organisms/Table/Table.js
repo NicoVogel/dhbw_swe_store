@@ -44,14 +44,18 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    // this.getTableData();
+    this.getTableData();
     // this is a workaround as getTableData is not called after postRow *async bullshit* :)
-    this.interval = setInterval(() => this.getTableData(), 1000);
+    // this.interval = setInterval(() => this.getTableData(), 1000);
+  }
+
+  componentWillUnmount() {
+    // clearInterval(this.interval);
   }
 
   getTableData() {
-    console.log('refresh data');
     const { category } = this.state;
+    console.log(`refresh data for ${category}`);
     axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
         if (results.status === 200) {
