@@ -29,6 +29,10 @@ class Table extends Component {
   }
 
   componentDidMount() {
+    this.getTableData();
+  }
+
+  getTableData() {
     const { category } = this.state;
     axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
@@ -46,6 +50,13 @@ class Table extends Component {
           errorMsg: `${error}`,
         });
       });
+  }
+
+  // ----------------------------------------------------
+  /* HANDLER */
+
+  testHandler = (event) => {
+    this.getTableData();
   }
 
   focusHandler = (event) => {
@@ -86,6 +97,9 @@ class Table extends Component {
      }
    });
   }
+
+
+  /** */
 
   render() {
 
@@ -158,7 +172,8 @@ class Table extends Component {
                       className="input-field" 
                       type="text" 
                       key={`add-${index}-input`} 
-                      placeholder={headerStrings.get(item)} />
+                      placeholder={headerStrings.get(item)} 
+                      onClick={this.testHandler}/>
                   </td>)}
               </tr>
             </tbody>
