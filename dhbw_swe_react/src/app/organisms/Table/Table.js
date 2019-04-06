@@ -18,6 +18,11 @@ class Table extends Component {
   constructor(props) {
     super(props);
     const { defaultTableHeaders, category } = this.props;
+    let newEntry = {};
+    defaultTableHeaders.forEach((headerElem) => {
+      newEntry[headerElem] = '';
+    });
+
     this.state = {
       defaultTableHeaders,
       category,
@@ -25,6 +30,7 @@ class Table extends Component {
       isLoaded: false,
       errorMsg: '',
       inEdit: false,
+      newEntry,
     }
   }
 
@@ -55,8 +61,21 @@ class Table extends Component {
   // ----------------------------------------------------
   /* HANDLER */
 
+  blurAddElementHandler = (event) => {
+
+    this.setState({
+      ...this.state,
+      newEntry:{
+        ...this.state.newEntry,
+        [event.target.id]:event.target.value,
+      }
+    })
+    console.log(this.state.newEntry);
+
+  }
+
   testHandler = (event) => {
-    this.getTableData();
+    // this.getTableData();
   }
 
   focusHandler = (event) => {
@@ -70,7 +89,7 @@ class Table extends Component {
     // TODO
   }
 
-  blurHandler = event => {
+  blurChangeElementHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
    const columnKey = event.target.id.split('_')[1];
@@ -110,8 +129,8 @@ class Table extends Component {
 
     if(this.state.tableData.length !== 0){
      
-      const headerList = Object.keys(this.state.tableData[0]);
-      header = headerList.filter(elem => elem !== '_links').map((columnTitle, index) => (
+      const headerList = Object.keys(this.state.tableData[0]).filter(elem => elem !== '_links');
+      header = headerList.map((columnTitle, index) => (
         <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
       ));
     }
@@ -151,7 +170,7 @@ class Table extends Component {
                             defaultValue={dataObject[key]} 
                             id={`${rowIndex}_${key}`}
                             onChange={this.changeHandler}
-                            onBlur={this.blurHandler} 
+                            onBlur={this.blurChangeElementHandler} 
                             onFocus={this.focusHandler} />
 
                           </form>
@@ -172,7 +191,10 @@ class Table extends Component {
                       className="input-field" 
                       type="text" 
                       key={`add-${index}-input`} 
-                      placeholder={headerStrings.get(item)} 
+                      id={`${item}`}
+                      placeholder={headerStrings.get(item)}
+                      defaultValue={this.state.newEntry[item]}
+                      onChange={this.blurAddElementHandler}
                       onClick={this.testHandler}/>
                   </td>)}
               </tr>
