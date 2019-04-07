@@ -1,8 +1,8 @@
 import React, { Component }from 'react';
 import './ProductDetail.scss';
-import Headline from '../../atoms/Headline/Headline';
 import RedirectBack from '../../atoms/RedirectBack/RedirectBack';
 import { SERVER_ADDRESS, REST_LINKS } from '../Resources';
+import DetailView from '../../organisms/DetailView/DetailView';
 
 const axios = require('axios');
 
@@ -37,14 +37,12 @@ class ProductDetail extends Component {
 
   render (){
     const { isLoaded, product } = this.state;
-    const { category, description } = product;
     return (
       <div className="productDetail-container">
       <RedirectBack history={this.props.history} text="Zurück zur Produktübersicht" />
-      <Headline text={`${category}: ${description}`} />
       { isLoaded ? 
         (
-          <p>{JSON.stringify(product)}</p>
+          <DetailView element={product} />
         )
         : null
 
