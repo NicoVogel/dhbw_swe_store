@@ -38,7 +38,7 @@ class Table extends Component {
       tableData: [],
       isLoaded: false,
       errorMsg: '',
-      rowInEdit: false,
+      rowInEdit: -1,
       newEntry,
       activeRow: -1,
     }
@@ -112,9 +112,10 @@ class Table extends Component {
   }
 
   onFocusChangeElementHandler = (event) => {
+    const rowIndex = event.target.id.split('_')[0];
     this.setState({
       ...this.state,
-      inEdit: true,
+      rowInEdit: parseInt(rowIndex),
     });
   }
 
@@ -141,7 +142,8 @@ class Table extends Component {
      return {
        ...this.state,
        tableData,
-       inEdit: false,
+       rowInEdit: -1,
+       activeRow: -1,
      }
    });
   }
@@ -149,6 +151,7 @@ class Table extends Component {
   onClickDeleteRowHandler = (event) => {
     console.log(`delete row ${event.target.id}`);
   }
+
   onClickMakeActive = (event) => {
     // if the input field is clicked instead of td, the id field is different
     // category will be included and need to be splitted
@@ -157,14 +160,16 @@ class Table extends Component {
       ...this.state,
       activeRow: parseInt(rowIndex),
     })
-
+  }
+  onDoNothing = (event) => {
+    console.log('change')
   }
   /** */
 
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow
+      isLoaded, errorMsg, activeRow, rowInEdit
     } = this.state;
     let header;
 
@@ -219,7 +224,7 @@ class Table extends Component {
                           <form>
 
                             <input 
-                            className={`input-field ${this.state.rowInEdit ? 'in-edit': ''}`}
+                            className={`input-field ${rowInEdit === rowIndex ? 'in-edit': ''}`}
                             type="text" 
                             key={`element-${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
