@@ -37,12 +37,11 @@ class ProductDetail extends Component {
 
   render (){
     const { isLoaded, product } = this.state;
-    console.log(isLoaded);
-
+    const { category, description } = product;
     return (
       <div className="productDetail-container">
-      <Headline text="CATEGORY: PRODUCT" />
       <RedirectBack history={this.props.history} text="Zurück zur Produktübersicht" />
+      <Headline text={`${category}: ${description}`} />
       { isLoaded ? 
         (
           <p>{JSON.stringify(product)}</p>
