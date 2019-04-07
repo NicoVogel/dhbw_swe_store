@@ -32,6 +32,8 @@ class Table extends Component {
       newEntry[headerElem] = '';
     });
 
+    // activeRow: detailed view + delete button shows up
+    // rowInEdit: user enters edit mode, text will be italic & change color
     this.state = {
       defaultTableHeaders,
       category,
@@ -116,6 +118,7 @@ class Table extends Component {
     this.setState({
       ...this.state,
       rowInEdit: parseInt(rowIndex),
+      activeRow: -1,
     });
   }
 
@@ -161,8 +164,18 @@ class Table extends Component {
       activeRow: parseInt(rowIndex),
     })
   }
+
+  resetActive = () => {
+    this.setState({
+      ...this.state,
+      activeRow: -1,
+      rowInEdit: -1,
+    })
+  }
+
   onDoNothing = (event) => {
-    console.log('change')
+    // override parents onclick method
+    event.stopPropagation();
   }
   /** */
 
@@ -220,7 +233,11 @@ class Table extends Component {
                       </td>
                       {
                         Object.keys(dataObject).filter(key => key !== '_links').map(key => (
-                          <td key={`element-${elementID}-${key}`} id={`${rowIndex}`} onClick={this.onClickMakeActive}>
+                          <td 
+                          key={`element-${elementID}-${key}`} 
+                          id={`${rowIndex}`} 
+                          onClick={this.onClickMakeActive}
+                          >
                           <form>
 
                             <input 
@@ -231,6 +248,7 @@ class Table extends Component {
                             id={`${rowIndex}_${key}`}
                             onChange={this.changeHandler}
                             onBlur={this.onBlurChangeElementHandler} 
+                            onClick={this.onDoNothing}
                             onFocus={this.onFocusChangeElementHandler} />
 
                           </form>
@@ -255,6 +273,7 @@ class Table extends Component {
                       placeholder={headerStrings.get(item)}
                       value={this.state.newEntry[item]}
                       onChange={this.onChangeAddElementHandler}
+                      onFocus={this.resetActive}
                       />
                   </td>)}
               </tr>
