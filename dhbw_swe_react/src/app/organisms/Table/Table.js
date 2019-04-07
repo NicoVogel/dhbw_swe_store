@@ -40,6 +40,7 @@ class Table extends Component {
       errorMsg: '',
       rowInEdit: false,
       newEntry,
+      activeRow: -1,
     }
   }
 
@@ -146,6 +147,16 @@ class Table extends Component {
   }
 
   onClickDeleteRowHandler = (event) => {
+    console.log(`delete row ${event.target.id}`);
+  }
+  onClickMakeActive = (event) => {
+    // if the input field is clicked instead of td, the id field is different
+    // category will be included and need to be splitted
+    const rowIndex = event.target.id.split('_')[0];
+    this.setState({
+      ...this.state,
+      activeRow: parseInt(rowIndex),
+    })
 
   }
   /** */
@@ -153,7 +164,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg
+      isLoaded, errorMsg, activeRow
     } = this.state;
     let header;
 
@@ -188,13 +199,23 @@ class Table extends Component {
                   elementID = elementID[elementID.length-1];
 
                   return (
-                    <tr key={`element-${elementID}`}>
+                    <tr key={`element-${elementID}`} id={`row-${rowIndex}`}>
                       <td className="hiddencolumn" key={`remove-${elementID}-hidden`}>
-                        <button className="button button-remove" type="submit" key={`remove-${elementID}-button`} onClick={this.onClickDeleteRowHandler} >X</button>
+                      { activeRow !== rowIndex ? null : (
+                          <button 
+                          className="button button-remove"
+                          type="submit" key={`remove-${elementID}-button`}
+                          id={`${rowIndex}`}
+                          onClick={this.onClickDeleteRowHandler}>
+                            X
+                          </button>
+                        )
+                      }
+                        
                       </td>
                       {
                         Object.keys(dataObject).filter(key => key !== '_links').map(key => (
-                          <td key={`element-${elementID}-${key}`}>
+                          <td key={`element-${elementID}-${key}`} id={`${rowIndex}`} onClick={this.onClickMakeActive}>
                           <form>
 
                             <input 
