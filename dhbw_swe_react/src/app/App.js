@@ -13,6 +13,7 @@ import Suppliers from './templates/Suppliers/Suppliers';
 import Deliverynote from './templates/Deliverynote/Deliverynote';
 import Settings from './templates/Settings/Settings';
 import Error from './templates/Error/Error';
+import ProductDetail from './templates/ProductDetail/ProductDetail';
 
 const App = () => (
   <BrowserRouter>
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/deliverynote" component={Deliverynote} />
           <Route path="/search" component={Search} />
           <Route path="/setting" component={Settings} />
+          <Route path="/test" component={ProductDetail} />
           <Route component={Error} />
         </Switch>
       </div>

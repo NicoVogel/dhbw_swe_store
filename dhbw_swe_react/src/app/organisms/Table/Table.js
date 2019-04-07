@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import './Table.scss';
 import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
