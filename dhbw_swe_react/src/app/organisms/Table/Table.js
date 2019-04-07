@@ -145,7 +145,9 @@ class Table extends Component {
    });
   }
 
+  onClickDeleteRowHandler = (event) => {
 
+  }
   /** */
 
   render() {
@@ -171,7 +173,7 @@ class Table extends Component {
             {this.state.tableData.length === 0 ? null : (
               <thead>
                 <tr key="header-row">
-                  <th id="hiddencolumn" key="header-hidden" />
+                  <th className="hiddencolumn" key="header-hidden" />
                   {header}
                 </tr>
               </thead>
@@ -187,7 +189,9 @@ class Table extends Component {
 
                   return (
                     <tr key={`element-${elementID}`}>
-                      <td id="hiddencolumn" key={`element-${elementID}-hidden`} />
+                      <td className="hiddencolumn" key={`remove-${elementID}-hidden`}>
+                        <button className="button button-remove" type="submit" key={`remove-${elementID}-button`} onClick={this.onClickDeleteRowHandler} >X</button>
+                      </td>
                       {
                         Object.keys(dataObject).filter(key => key !== '_links').map(key => (
                           <td key={`element-${elementID}-${key}`}>
@@ -212,8 +216,8 @@ class Table extends Component {
                 })
               }
               <tr key="add-row">
-                <td id="hiddencolumn" key="add-hidden">
-                  <button id="addbutton" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
+                <td className="hiddencolumn" key="add-hidden">
+                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
                 </td>
                 {this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>
