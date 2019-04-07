@@ -1,0 +1,85 @@
+@import '../../../styles/defines';
+
+.navigation {
+  background-color: $color-main;
+  width: 100px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+  transition: all 350ms ease-in-out;
+
+  padding: 5px;
+
+  &.open {
+    width: 400px;
+    padding-left: 20px;
+  }
+
+
+  .nav-link {
+    color: $color-text-light;
+    font-size: 1.75rem;
+    text-decoration: none;
+    display: flex;
+
+    .icon {
+      width: 1.75rem;
+    }
+
+    .text {
+      margin-left: 10px;
+    }
+
+    &.active {
+      color: $color-accent;
+    }
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+
+    .items-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+  .top {
+    position: relative;
+    padding-top: 30px;
+    .nav-back {
+      font-size: 2rem;
+      color: $color-text-light;
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 4rem;
+      // color: $color-accent;
+      color: $color-text-light;
+      text-decoration: none;
+
+    }
+  }
+
+  .center {
+    flex: 2;
+    justify-content: space-around;
+  }
+
+  .bottom {
+    justify-content: flex-end;
+    padding-bottom: 30px;
+  }
+}
