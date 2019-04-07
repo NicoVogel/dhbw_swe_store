@@ -3,16 +3,23 @@ import './ProductDetail.scss';
 import RedirectBack from '../../atoms/RedirectBack/RedirectBack';
 import { SERVER_ADDRESS, REST_LINKS } from '../Resources';
 import DetailView from '../../organisms/DetailView/DetailView';
+import { Redirect } from 'react-router-dom';
 
 const axios = require('axios');
 
 class ProductDetail extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       product: {},
       isLoaded: false,
+    }
+    
+    if(isNaN(parseInt(this.props.match.params.productID))){
+      this.state = {
+        ...this.state,
+        error: true,
+      }
     }
   }
 
@@ -32,23 +39,27 @@ class ProductDetail extends Component {
   };
 
   componentDidMount() {
-    this.getProductInfo();
+    if(!this.state.error) {
+      this.getProductInfo();
+    }
   }
 
   render (){
     const { isLoaded, product } = this.state;
-    return (
-      <div className="productDetail-container">
-      <RedirectBack history={this.props.history} text="Zurück zur Produktübersicht" />
-      { isLoaded ? 
-        (
-          <DetailView element={product} />
-        )
-        : null
+    if (!this.state.error) {
+      return (
+        <div className="productDetail-container">
+          <RedirectBack history={this.props.history} text="Zurück zur Produktübersicht" />
+          { isLoaded ? 
+            (
+              <DetailView element={product} />
+              )
+              : null
 
-      }
-    </div>
-  );
+          }
+        </div>
+    );
+  } return <Redirect to="/error" />
   }
 }
 

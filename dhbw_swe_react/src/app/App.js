@@ -24,7 +24,7 @@ const App = () => (
       <div className="switch-wrapper">
         <Switch className="flex-item">
           <Route exact path="/home" component={Home} />
-          <Route exact path="/" >
+          <Route exact path="/">
             <Redirect to="/home" />
           </Route>
           <Route exact path="/product" component={Products} />
