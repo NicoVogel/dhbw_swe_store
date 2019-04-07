@@ -10,12 +10,20 @@ class ProductDetail extends Component {
   constructor(props) {
     super(props);
 
-  const getProductInfo = () => {
-    // let test;
-    axios.get(`${SERVER_ADDRESS}${REST_LINKS.get('product')}/${match.params.productID}`)
+    this.state = {
+      product: {},
+      isLoaded: false,
+    }
+  }
+
+  getProductInfo = () => {
+    axios.get(`${SERVER_ADDRESS}${REST_LINKS.get('product')}/${this.props.match.params.productID}`)
       .then((results) => {
         if (results.status === 200) {
-          console.log(results.data);
+          this.setState({
+            product: results.data,
+            isLoaded: true,
+          })
         }
       })
       .catch((error) => {
@@ -23,12 +31,25 @@ class ProductDetail extends Component {
       });
   };
 
+  componentDidMount() {
+    this.getProductInfo();
+  }
 
   render (){
+    const { isLoaded, product } = this.state;
+    console.log(isLoaded);
+
     return (
       <div className="productDetail-container">
       <Headline text="CATEGORY: PRODUCT" />
       <RedirectBack history={this.props.history} text="Zurück zur Produktübersicht" />
+      { isLoaded ? 
+        (
+          <p>{JSON.stringify(product)}</p>
+        )
+        : null
+
+      }
     </div>
   );
   }
