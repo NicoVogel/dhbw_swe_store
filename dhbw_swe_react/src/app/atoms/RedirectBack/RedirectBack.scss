@@ -1,0 +1,19 @@
+@import '../../../styles/defines';
+
+.redirect-back{
+  button {
+    border: none;
+    outline: none;
+    font-size: larger;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+    // padding:5px;
+    &:hover {
+        color: $color-accent;
+    }
+  }
+  .icon {
+    margin: 0 15px 0 0;
+  }
+}
