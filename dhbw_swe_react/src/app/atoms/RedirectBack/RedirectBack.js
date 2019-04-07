@@ -1,7 +1,7 @@
 import React from 'react';
 import './RedirectBack.scss';
 
-const RedirectBack = (props) =>{
+const RedirectBack = (props) => {
   const { history, text } = props;
   return (
     <div className="redirect-back">
@@ -10,7 +10,7 @@ const RedirectBack = (props) =>{
       </button>
     </div>
   );
-} 
+};
 
 
 export default RedirectBack;
