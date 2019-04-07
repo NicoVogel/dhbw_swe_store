@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Table.scss';
 import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
+import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
 const axios = require('axios');
 
@@ -211,7 +212,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted
+      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted, category
     } = this.state;
     let header;
 
@@ -260,13 +261,12 @@ class Table extends Component {
                         
                       </td>
                       {
-                        Object.keys(dataObject).filter(key => key !== '_links').map(key => (
+                        Object.keys(dataObject).filter(key => key !== '_links').map((key, columnIndex) => (
                           <td 
                           key={`element-${elementID}-${key}`} 
                           id={`${rowIndex}`} 
                           onClick={this.onClickMakeActive}
                           >
-                          <form>
 
                             <input 
                             className={`input-field ${rowInEdit === rowIndex ? 'in-edit': ''}`}
@@ -278,8 +278,12 @@ class Table extends Component {
                             onBlur={this.onBlurChangeElementHandler} 
                             onClick={this.onDoNothing}
                             onFocus={this.onFocusChangeElementHandler} />
-
-                          </form>
+                            
+                          { /* only apply the redirect arrow for the first column of products and if the row is active  */
+                            (columnIndex === 0 && category === 'product' && rowIndex === activeRow) ? 
+                            <RedirectDetail id={elementID} />
+                            : null
+                          }
                           </td>
                         ))
                       }
