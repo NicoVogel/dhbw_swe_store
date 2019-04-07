@@ -51,7 +51,8 @@ Table th {
 Table .hiddencolumn {
     background: white;
     border: none;
-    width: 50px;
+    width: 30px;
+    padding: 0 8px;
 }
 
 Table .button {
@@ -59,8 +60,8 @@ Table .button {
     color: white;
     outline: none;
     border-radius: 5px;
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     font-size: larger;
     cursor: pointer;
     &:active {
