@@ -21,6 +21,14 @@ function postRow(row, category) {
       .catch(error => console.log(error));
 }
 
+function deleteRow (rowID, category) {
+  axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
+      .then(results => {
+        console.log(results);
+      })
+      .catch(error => console.log(error));
+}
+
 class Table extends Component {
 
   constructor(props) {
@@ -43,6 +51,7 @@ class Table extends Component {
       rowInEdit: -1,
       newEntry,
       activeRow: -1,
+      toBeDeleted: -2,
     }
   }
 
@@ -92,7 +101,6 @@ class Table extends Component {
   }
 
   onClickAddRowHandler = (event) => {
-    // this.getTableData();
     const missingEntriesCount = Object.keys(this.state.newEntry).filter(key => this.state.newEntry[key].length === 0).length;
     
     if(missingEntriesCount === 0) {
@@ -119,6 +127,7 @@ class Table extends Component {
       ...this.state,
       rowInEdit: parseInt(rowIndex),
       activeRow: -1,
+      toBeDeleted: -2,
     });
   }
 
@@ -147,12 +156,31 @@ class Table extends Component {
        tableData,
        rowInEdit: -1,
        activeRow: -1,
+       toBeDeleted: -2,
      }
    });
   }
 
   onClickDeleteRowHandler = (event) => {
-    console.log(`delete row ${event.target.id}`);
+    const rowID = event.target.id.split('_')[0];
+    // const rowIndex = event.target.id.split('_')[1];
+    const { activeRow, toBeDeleted, category } = this.state;
+
+    // this prevents the user from deleting on first click by saving the step inbetween
+    if (activeRow !== toBeDeleted) {
+      this.setState({
+        ...this.state,
+        toBeDeleted: activeRow,
+      });
+    } else {
+
+      deleteRow(rowID, category);
+      this.setState({
+        ...this.state,
+        activeRow: -1,
+        toBeDeleted: -2,
+      })
+    }
   }
 
   onClickMakeActive = (event) => {
@@ -162,6 +190,7 @@ class Table extends Component {
     this.setState({
       ...this.state,
       activeRow: parseInt(rowIndex),
+      toBeDeleted: -2,
     })
   }
 
@@ -170,6 +199,7 @@ class Table extends Component {
       ...this.state,
       activeRow: -1,
       rowInEdit: -1,
+      toBeDeleted: -2,
     })
   }
 
@@ -182,7 +212,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow, rowInEdit
+      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted
     } = this.state;
     let header;
 
@@ -193,7 +223,6 @@ class Table extends Component {
         <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
       ));
     }
-
     return (
       <div className="table-container">
         {isLoaded
@@ -217,13 +246,13 @@ class Table extends Component {
                   elementID = elementID[elementID.length-1];
 
                   return (
-                    <tr key={`element-${elementID}`} id={`row-${rowIndex}`}>
+                    <tr key={`element-${elementID}`} id={`row-${rowIndex}`} className={ rowIndex !== toBeDeleted ? '' :  'to-be-deleted' }>
                       <td className="hiddencolumn" key={`remove-${elementID}-hidden`}>
                       { activeRow !== rowIndex ? null : (
                           <button 
                           className="button button-remove"
                           type="submit" key={`remove-${elementID}-button`}
-                          id={`${rowIndex}`}
+                          id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
                             X
                           </button>

@@ -35,7 +35,13 @@ Table th {
     cursor: default;
 }
 
-.input-field {
+Table tr.to-be-deleted {
+    // fuck youuuuu, shitty specificity of css
+    background-color: rgba($color-main, 0.75);
+    
+}
+
+Table td .input-field {
     border: none;
     background-color: transparent;
     outline: none;
