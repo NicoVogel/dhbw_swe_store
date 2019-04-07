@@ -1,9 +1,9 @@
 import React from 'react';
 import './RedirectBack.scss';
 
-const RedirectBack = text => (
+const RedirectBack = () => (
   <div className="redirect-back">
-    {text}
+    test
   </div>
 );
 
