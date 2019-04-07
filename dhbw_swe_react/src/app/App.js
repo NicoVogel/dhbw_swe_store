@@ -23,18 +23,18 @@ const App = () => (
       <Navigation />
       <div className="switch-wrapper">
         <Switch className="flex-item">
-          <Route path="/home" component={Home} exact />
-          <Route path="/" exact>
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/" >
             <Redirect to="/home" />
           </Route>
-          <Route path="/product" component={Products} />
-          <Route path="/producer" component={Producers} />
-          <Route path="/supplier" component={Suppliers} />
-          <Route path="/customer" component={Customers} />
-          <Route path="/deliverynote" component={Deliverynote} />
-          <Route path="/search" component={Search} />
-          <Route path="/setting" component={Settings} />
-          <Route path="/productdetail/:productID" component={ProductDetail} />
+          <Route exact path="/product" component={Products} />
+          <Route exact path="/product/:productID" component={ProductDetail} />
+          <Route exact path="/producer" component={Producers} />
+          <Route exact path="/supplier" component={Suppliers} />
+          <Route exact path="/customer" component={Customers} />
+          <Route exact path="/deliverynote" component={Deliverynote} />
+          <Route exact path="/search" component={Search} />
+          <Route exact path="/setting" component={Settings} />
           <Route component={Error} />
         </Switch>
       </div>
