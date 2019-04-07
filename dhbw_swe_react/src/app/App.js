@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import './App.scss';
 
@@ -21,8 +21,10 @@ const App = () => (
       <Navigation />
       <div className="switch-wrapper">
         <Switch className="flex-item">
-          <Route path="/" component={Home} exact />
           <Route path="/home" component={Home} exact />
+          <Route path="/" exact>
+            <Redirect to="/home" />
+          </Route>
           <Route path="/product" component={Products} />
           <Route path="/producer" component={Producers} />
           <Route path="/supplier" component={Suppliers} />
