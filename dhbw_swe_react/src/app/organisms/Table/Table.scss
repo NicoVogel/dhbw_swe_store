@@ -1,7 +1,7 @@
 @import '../../../styles/defines';
 
 .table-container {
-    padding-top: 50px;
+    padding-top: 25px;
 }
 
 Table {
@@ -12,7 +12,7 @@ Table {
 Table td,
 Table th {
     border: 1px solid rgb(161, 161, 161);
-    padding: 8px;
+    padding: 10px;
     cursor: pointer;
 
 }
@@ -32,6 +32,7 @@ Table th {
     text-align: left;
     background-color: $color-accent;
     color: white;
+    font-weight: 500;
     cursor: default;
 }
 

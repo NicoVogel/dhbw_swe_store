@@ -11,16 +11,20 @@ const DetailView = ({ element }) => {
       <Headline text={`${category}: ${description}`} />
       <div className="list-body">
         {
-          Object.keys(element).filter(key => key !== '_links').map(key => (
-            <div className="list-row" key={`${key}`}>
-              <div className="key">
-                {headerStrings.get(key)}
+          Object.keys(element)
+            .filter(key => key !== '_links')
+            .filter(key => key !== 'category')
+            .filter(key => key !== 'description')
+            .map(key => (
+              <div className="list-row" key={`${key}`}>
+                <div className="key">
+                  {headerStrings.get(key)}
+                </div>
+                <div className="value">
+                  {element[key]}
+                </div>
               </div>
-              <div className="value">
-                {element[key]}
-              </div>
-            </div>
-          ))
+            ))
         }
       </div>
 

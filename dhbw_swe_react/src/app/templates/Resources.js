@@ -7,7 +7,7 @@ REST_LINKS.set('product', '/api/product');
 
 headerStrings.set('name', 'Name');
 headerStrings.set('address', 'Adresse');
-headerStrings.set('count', 'Anzahl im Lager');
+headerStrings.set('count', 'Verfügbarkeit im Lager');
 headerStrings.set('description', 'Produktbezeichung');
 headerStrings.set('category', 'Kategorie');
 headerStrings.set('sellPrice', 'Verkaufspreis');
