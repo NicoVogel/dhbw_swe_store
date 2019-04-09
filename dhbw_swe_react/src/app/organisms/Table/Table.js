@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
 import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
@@ -366,7 +366,6 @@ class Table extends Component {
           ]
         }
         
-        {/* <ToastContainer className="toast-container"/> */}
       </div>
     );
   }
