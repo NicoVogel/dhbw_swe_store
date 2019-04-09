@@ -3,30 +3,76 @@ import './Table.scss';
 import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const axios = require('axios');
+
+toast.configure({
+  closeButton:false,
+  autoClose: 3000,
+});
 
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
 function updateRow(row) {
+  const id = notifyInfo("Update läuft");
    axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => console.log(results))
-      .catch(error => console.log(error));
+      .then(results => {
+        console.log(results);
+        notifyUpdateSuccess(id, "Update erfolgreich");
+      })
+      .catch(error => {
+        console.log(error);
+        notifyUpdateError(id, "Update fehlgeschlagen");
+      });
 }
 
 function postRow(row, category) {
+  const id = notifyInfo("Neuer Eintrag anlegen");
   axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
       .then(results => {
         console.log(results);
+        notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        notifyUpdateError(id, "Eintrag anlegen fehlgeschlagen");
+      });
 }
 
 function deleteRow (rowID, category) {
+  const id = notifyInfo("Eintrag löschen");
   axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
       .then(results => {
         console.log(results);
+        notifyUpdateSuccess(id, "Löschen erfolgreich");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        notifyUpdateError(id, "Löschen fehlgeschlagen");
+      });
+}
+
+const notifyError = (text) => {
+  return toast.error(text);
+}
+const notifyInfo = (text) => {
+  return toast.info(text);
+}
+
+const notifyUpdateSuccess = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.SUCCESS,
+  });
+}
+
+const notifyUpdateError = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.ERROR,
+  });
 }
 
 class Table extends Component {
@@ -114,7 +160,10 @@ class Table extends Component {
         ...this.state,
         newEntry,
       })
-    } 
+      
+    } else {
+      notifyError(`Bitte fülle die restlichen ${missingEntriesCount} Felder aus!`);
+    }
   }
 
   changeHandler = (event) => {
