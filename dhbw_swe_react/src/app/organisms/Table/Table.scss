@@ -86,6 +86,9 @@ Table .button-remove {
     }
 }
 
-.notify-error, .notify-error-body{
-    background-color: blue;
+.Toastify__toast--success {
+    background-color: $color-accent;
+}
+.Toastify__toast--info {
+    background-color: $color-main;
 }
