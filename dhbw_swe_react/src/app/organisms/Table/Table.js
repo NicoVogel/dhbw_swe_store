@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
-import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
 
@@ -57,8 +57,16 @@ function deleteRow (rowID, category) {
 const notifyError = (text) => {
   return toast.error(text);
 }
+
 const notifyInfo = (text) => {
   return toast.info(text);
+}
+
+const notifySuccess = (text, hideProgressBar, autoClose) => {
+  if (autoClose !== undefined) {
+    return toast.success(text, {hideProgressBar, autoClose});
+  }
+  return toast.success(text, {hideProgressBar});
 }
 
 const notifyUpdateSuccess = (id, text) => {
@@ -123,12 +131,14 @@ class Table extends Component {
             isLoaded: true,
           });
         }
+        notifySuccess(`${CATEGORY.get(category)} erfolgreich geladen`, true, 1500);
       })
       .catch((error) => {
         this.setState({
           ...this.state,
           errorMsg: `${error}`,
         });
+        notifyError(`Ein Fehler ist aufgetreten:\n ${error}`);
       });
   }
 
