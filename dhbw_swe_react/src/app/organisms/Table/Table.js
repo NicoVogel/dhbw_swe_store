@@ -82,15 +82,13 @@ class Table extends Component {
       newEntry[headerElem] = '';
     });
 
-    // activeRow: detailed view + delete button shows up
-    // rowInEdit: user enters edit mode, text will be italic & change color
+    // activeRow: detailed view + delete button shows up, user enters edit mode, text will be italic & change color
     this.state = {
       defaultTableHeaders,
       category,
       tableData: [],
       isLoaded: false,
       errorMsg: '',
-      rowInEdit: -1,
       newEntry,
       activeRow: -1,
       toBeDeleted: -2,
@@ -188,8 +186,7 @@ class Table extends Component {
     const rowIndex = event.target.id.split('_')[0];
     this.setState({
       ...this.state,
-      rowInEdit: parseInt(rowIndex),
-      activeRow: -1,
+      activeRow: parseInt(rowIndex),
       toBeDeleted: -2,
     });
   }
@@ -217,7 +214,6 @@ class Table extends Component {
      return {
        ...this.state,
        tableData,
-       rowInEdit: -1,
        activeRow: -1,
        toBeDeleted: -2,
      }
@@ -261,7 +257,6 @@ class Table extends Component {
     this.setState({
       ...this.state,
       activeRow: -1,
-      rowInEdit: -1,
       toBeDeleted: -2,
     })
   }
@@ -275,7 +270,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted, category
+      isLoaded, errorMsg, activeRow, toBeDeleted, category
     } = this.state;
     let header;
 
@@ -332,7 +327,7 @@ class Table extends Component {
                           >
 
                             <input 
-                            className={`input-field ${rowInEdit === rowIndex ? 'in-edit': ''}`}
+                            className={`input-field ${activeRow === rowIndex ? 'in-edit': ''}`}
                             type="text" 
                             key={`element-${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
