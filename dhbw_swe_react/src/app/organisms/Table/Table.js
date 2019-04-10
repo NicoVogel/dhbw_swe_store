@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
-import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY, RemoveButton, AddButton } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
 
@@ -312,7 +312,7 @@ class Table extends Component {
                           type="submit" key={`remove-${elementID}-button`}
                           id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
-                            X
+                            <RemoveButton />
                           </button>
                         )
                       }
@@ -351,7 +351,9 @@ class Table extends Component {
               }
               <tr key="add-row">
                 <td className="hiddencolumn" key="add-hidden">
-                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
+                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >
+                    <AddButton />
+                  </button>
                 </td>
                 {this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>

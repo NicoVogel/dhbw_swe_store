@@ -59,31 +59,18 @@ Table .hiddencolumn {
     background: white;
     border: none;
     width: 30px;
-    padding: 0 8px;
+    padding: 0;
 }
 
 Table .button {
     border: none;
     color: white;
     outline: none;
-    border-radius: 5px;
-    height: 25px;
-    width: 25px;
+    padding: 0;
+    background-color: white;
     font-size: larger;
     cursor: pointer;
-    &:active {
-        color: $color-accent;
-    }
-}
-Table .button-add {
-    background-color: $color-main;
-}
-
-Table .button-remove {
-    background-color: red;
-    &:active {
-        color: $color-text-medium;
-    }
+    
 }
 
 .Toastify__toast--success {
