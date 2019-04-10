@@ -28,18 +28,6 @@ function updateRow(row) {
       });
 }
 
-function postRow(row, category) {
-  const id = notifyInfo("Neuer Eintrag anlegen");
-  axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => {
-        console.log(results);
-        notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
-      })
-      .catch(error => {
-        console.log(error);
-        notifyUpdateError(id, "Eintrag anlegen fehlgeschlagen");
-      });
-}
 
 function deleteRow (rowID, category) {
   const id = notifyInfo("Eintrag löschen");
@@ -119,6 +107,31 @@ class Table extends Component {
     // clearInterval(this.interval);
   }
 
+  postRow(row, category) {
+    const id = notifyInfo("Neuer Eintrag anlegen");
+    axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
+        .then(results => {
+          console.log(results);
+
+          // reset new row
+          let newEntry = {};
+          this.props.defaultTableHeaders.forEach((headerElem) => {
+            newEntry[headerElem] = '';
+          });
+
+          this.setState({
+            ...this.state,
+            newEntry,
+          });
+
+          notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
+        })
+        .catch(error => {
+          console.log({error});
+          notifyUpdateError(id, `Eintrag anlegen fehlgeschlagen - HTTP Fehler: ${error.response.status}`);
+        });
+  }
+
   getTableData() {
     const { category } = this.state;
     console.log(`refresh data for ${category}`);
@@ -160,16 +173,7 @@ class Table extends Component {
     const missingEntriesCount = Object.keys(this.state.newEntry).filter(key => this.state.newEntry[key].length === 0).length;
     
     if(missingEntriesCount === 0) {
-      postRow(this.state.newEntry, this.state.category);
-      let newEntry = {};
-      this.props.defaultTableHeaders.forEach((headerElem) => {
-        newEntry[headerElem] = '';
-      });
-
-      this.setState({
-        ...this.state,
-        newEntry,
-      })
+      this.postRow(this.state.newEntry, this.state.category);
       
     } else {
       notifyError(`Bitte fülle die restlichen ${missingEntriesCount} Felder aus!`);
