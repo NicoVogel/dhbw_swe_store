@@ -187,25 +187,24 @@
 
 **/D01/ Produktdaten**
 
-- **Verfügbarkeit**
+- Verfügbarkeit
 - Bezeichnung
 - Herkunft (Land, Region)
-- **Produktart**
+- Produktart
 - Verkaufspreis
 - Einkaufspreis
+- Einkaufsdatum 
 - Bezugsquelle
 
 **/D02/ Lieferantendaten**
 
 - Name
 - Adresse
-- ~~Preisliste~~
 
 **/D03/ Produzent**
 
 - Name
 - Adresse
-- ~~Preisliste~~
 
 **/D04/ Kunde**
 

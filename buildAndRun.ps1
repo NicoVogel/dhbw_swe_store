@@ -32,9 +32,6 @@ if($args[0] -Match "t"){
 $VOLUME_M2_PATH="${USER_PATH}/.m2:/root/.m2"
 #https://hub.docker.com/_/maven#how-to-use-this-image
 $VOLUME_PROJECT="${MOUNT_PATH}/dhbw_swe_server:/usr/src/mymaven"
-$VOLUME_NODE="${MOUNT_PATH}/dhbw_swe_react:/home/node"
-#https://stackoverflow.com/questions/36765138/bind-to-docker-socket-on-windows
-$VOLUME_DOCKER="/var/run/docker.sock:/var/run/docker.sock"
 $DOCKER_HOST="DOCKER_HOST=unix:///var/run/docker.sock"
 
 Set-Variable DOCKER_HOST=$Env:DOCKER_HOST
