@@ -13,48 +13,47 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Used to cover default rest exceptions
+ * 
+ * @author nivogel
+ *
+ */
 @Getter
 @Setter
 @AllArgsConstructor
 public class ApiError {
 
 	private HttpStatus status;
-	   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-	   private LocalDateTime timestamp;
-	   private String message;
-	   private String debugMessage;
-	   @Setter(value = AccessLevel.NONE)
-	   private List<ApiSubError> subErrors;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+	private LocalDateTime timestamp;
+	private String message;
+	private String debugMessage;
+	@Setter(value = AccessLevel.NONE)
+	private List<ApiValidationError> subErrors;
 
-	   private ApiError() {
-	       timestamp = LocalDateTime.now();
-	   }
+	/**
+	 * create new api error
+	 * @param status http status of the error
+	 * @param message reason for this error
+	 * @param ex origin
+	 */
+	ApiError(HttpStatus status, String message, Throwable ex) {
+		timestamp = LocalDateTime.now();
+		this.status = status;
+		this.message = message;
+		this.debugMessage = ex.getLocalizedMessage();
+	}
 
-	   ApiError(HttpStatus status) {
-	       this();
-	       this.status = status;
-	   }
+	/**
+	 * get sub errors
+	 * @return
+	 */
+	public List<ApiValidationError> getSubErrors() {
+		if (this.subErrors == null) {
+			this.subErrors = new ArrayList<>();
+		}
+		return this.subErrors;
+	}
 
-	   ApiError(HttpStatus status, Throwable ex) {
-	       this();
-	       this.status = status;
-	       this.message = "Unexpected error";
-	       this.debugMessage = ex.getLocalizedMessage();
-	   }
-
-	   ApiError(HttpStatus status, String message, Throwable ex) {
-	       this();
-	       this.status = status;
-	       this.message = message;
-	       this.debugMessage = ex.getLocalizedMessage();
-	   }
-	
-	   
-	   public List<ApiSubError> getSubErrors(){
-		   if(this.subErrors == null) {
-			   this.subErrors = new ArrayList<>();
-		   }
-		   return this.subErrors;
-	   }
-	   
 }

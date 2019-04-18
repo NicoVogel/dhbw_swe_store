@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * represents one real product with an id
+ * @author nivogel
+ *
+ */
+
 @Entity
 @Getter
 @Setter

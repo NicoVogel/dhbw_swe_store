@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * represents one real customer with an id
+ * @author nivogel
+ *
+ */
+
 @Entity
 @Getter
 @Setter

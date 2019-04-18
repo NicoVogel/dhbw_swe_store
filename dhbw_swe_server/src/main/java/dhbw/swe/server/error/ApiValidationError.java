@@ -4,12 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * contains rest input error, like wrong format
+ * @author nivogel
+ *
+ */
+
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @AllArgsConstructor
-class ApiValidationError extends ApiSubError {
-   private String field;
-   private Object rejectedValue;
-   private Class<?> targetType;
-   private String format;
+class ApiValidationError {
+	private String field;
+	private Object rejectedValue;
+	private Class<?> targetType;
+	private String format;
 }
