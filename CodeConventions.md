@@ -1,6 +1,6 @@
 # Code Konventionen
 
-Das Projekt Großmarkt wurde im klassischen Client/Server Konzept implementiert. Auf seitens des Servers wurde auf das Java Webframework *Spring* gesetzt. Für die Clientimplementierung wurde die JavaScript-Library React verwendet.
+Das Projekt Großmarkt wurde im klassischen Client/Server Konzept implementiert. Auf seitens des Servers wurde auf das Java Webframework *Spring* gesetzt. Für die Clientimplementierung wurde die JavaScript-Library *React* verwendet.
 
 ## Java Konventionen
 
