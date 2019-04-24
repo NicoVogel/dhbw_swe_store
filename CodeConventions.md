@@ -52,5 +52,13 @@ Das Userinterface ist mit folgenden React Konventionen umgesetzt:
 
 **JS-Linter**
 
+Um bei der Implementierung sauberen Code-Konventionen zu folgen, wurde ein JavaScript Linter eingesetzt. Die Regeln des Linters sind dabei auf den Airbnb Standard zurückzuführen. Der vollständige JavaScript Style Guide von Airbnb ist auf Github zu finden.
+
+[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) 
+
 
 **Atomic Design**
+
+Für die Struktur und das Layouting des Userinterfaces wurde ebenso auf eine Konvention gesetzt. Hier wurde auf das *Atomic Design* Konzept zurückgegriffen. Dabei wird die Oberfläche gedanklich in verschieden "Komponenten" aufgeteilt, welche jeweils einen speziellen Aufgabenbereich sowie Kontext abdecken. Für die Aufteilung kommen die drei Grundstrukturen der Chemie: Atome, Moleküle, sowie Organismen zum tragen. Eine ausführliche Beschreibung ist im Ebook von Brad Frost zu finden.
+
+[Atomic Design - Brad Frost](http://bradfrost.com/blog/post/atomic-web-design/)
