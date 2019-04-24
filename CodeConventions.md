@@ -26,7 +26,7 @@ Der Java Server ist nach den folgenden Konventionen geschrieben:
     - 4: Konstruktoren
     - 5: Public Methoden
     - 6: Private Methoden
-  - Attribute: *Alle nicht statische Attribute müssen private sein*
+  - Attribute: *Alle nicht statische Attribute müssen privat sein*
 
 ## Javascript Konvention
 
@@ -48,14 +48,14 @@ Das Userinterface ist mit folgenden React Konventionen umgesetzt:
   - Dateien
     - JSX Datei --> Struktur + Funktionalität (JavaScript XML)
     - SCSS Datei --> Design (CSS Präprozessor)
+  - verwenden von funktionalen Komponenten wo kein 'state' benötigt wird, anstatt klassenbasierte
 
 
 **JS-Linter**
 
 Um bei der Implementierung sauberen Code-Konventionen zu folgen, wurde ein JavaScript Linter eingesetzt. Die Regeln des Linters sind dabei auf den Airbnb Standard zurückzuführen. Der vollständige JavaScript Style Guide von Airbnb ist auf Github zu finden.
 
-[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) 
-
+[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 
 **Atomic Design**
 
