@@ -5,16 +5,17 @@ import './Table.scss';
 import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY, RemoveButton, AddButton } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
-
+// use a library instead of vanilla js for REST API , due to better performance and ease of use
 const axios = require('axios');
 
+// configure notification system globally
 toast.configure({
   closeButton:false,
   autoClose: 3000,
 });
 
-// TODO
-// eslint-disable-next-line react/prefer-stateless-function
+// REST API (without needing the state)
+
 function updateRow(row) {
   const id = notifyInfo("Update läuft");
    axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
@@ -41,6 +42,9 @@ function deleteRow (rowID, category) {
         notifyUpdateError(id, "Löschen fehlgeschlagen");
       });
 }
+
+// ----------------------------
+// NOTIFICATION
 
 const notifyError = (text) => {
   return toast.error(text);
@@ -71,6 +75,13 @@ const notifyUpdateError = (id, text) => {
   });
 }
 
+// ------------------------
+
+/**
+ * Renders a Table 
+ * @param {props} props needs category and default headers
+ */
+
 class Table extends Component {
 
   constructor(props) {
@@ -82,21 +93,25 @@ class Table extends Component {
       newEntry[headerElem] = '';
     });
 
-    // activeRow: detailed view + delete button shows up, user enters edit mode, text will be italic & change color
     this.state = {
       defaultTableHeaders,
       category,
       tableData: [],
       isLoaded: false,
       errorMsg: '',
+      // newEntry: temporarily hold the new row
       newEntry,
+      // activeRow: detailed view + delete button shows up, user enters edit mode, text will be italic & change color
       activeRow: -1,
+      // toBeDeleted: selected row will be marked red, provides an intermediate step before deleting 
       toBeDeleted: -2,
     }
   }
 
   componentDidMount() {
     this.getTableData();
+    // currently changes can only be seen after a refresh, alternatively, use the workaround
+
     // this is a workaround as getTableData is not called after postRow *async bullshit* :)
     // this.interval = setInterval(() => this.getTableData(), 1000);
   }
@@ -105,6 +120,9 @@ class Table extends Component {
     // clearInterval(this.interval);
   }
 
+  // ------------------------------------
+
+  // Rest Call for updating a row, but needs acces to props and states for updating values
   postRow(row, category) {
     const id = notifyInfo("Neuer Eintrag anlegen");
     axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
@@ -130,6 +148,8 @@ class Table extends Component {
         });
   }
 
+  // Rest Call for fetching the table data, but needs acces to state for filling tableData
+
   getTableData() {
     const { category } = this.state;
     console.log(`refresh data for ${category}`);
@@ -154,7 +174,7 @@ class Table extends Component {
   }
 
   // ----------------------------------------------------
-  /* HANDLER */
+  /* EVENTHANDLER */
 
   onChangeAddElementHandler = (event) => {
 
@@ -179,9 +199,12 @@ class Table extends Component {
   }
 
   changeHandler = (event) => {
-    // TODO
+    // do nothing on change, as other onblur/onfocus are less resource intensive but do the same
   }
-
+ 
+  /**
+   * Update the active row which is in current focus
+   */
   onFocusChangeElementHandler = (event) => {
     const rowIndex = event.target.id.split('_')[0];
     this.setState({
@@ -191,6 +214,9 @@ class Table extends Component {
     });
   }
 
+  /**
+   * Sends an Update to the DB if there is a change in the active Row, reset all active markers afterwards
+   */
   onBlurChangeElementHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
@@ -220,9 +246,11 @@ class Table extends Component {
    });
   }
 
+  /**
+   * Deletes the row, mark the row first and deletes it when toBeDeleted matches the active row again
+   */
   onClickDeleteRowHandler = (event) => {
     const rowID = event.target.id.split('_')[0];
-    // const rowIndex = event.target.id.split('_')[1];
     const { activeRow, toBeDeleted, category } = this.state;
 
     // this prevents the user from deleting on first click by saving the step inbetween
@@ -242,6 +270,9 @@ class Table extends Component {
     }
   }
 
+  /**
+   * Marks the row as active (for displaying remove & detail buttons)
+   */
   onClickMakeActive = (event) => {
     // if the input field is clicked instead of td, the id field is different
     // category will be included and need to be splitted
@@ -253,6 +284,9 @@ class Table extends Component {
     })
   }
 
+  /**
+   * Resets every marker
+   */
   resetActive = () => {
     this.setState({
       ...this.state,
@@ -261,11 +295,15 @@ class Table extends Component {
     })
   }
 
+  /**
+   * Testing purposes only!
+   */
   onDoNothing = (event) => {
     // override parents onclick method
     event.stopPropagation();
   }
-  /** */
+
+  // ---------------------------
 
   render() {
 
@@ -274,8 +312,8 @@ class Table extends Component {
     } = this.state;
     let header;
 
+    // generate the header from the first row of the tableData
     if(this.state.tableData.length !== 0){
-     
       const headerList = Object.keys(this.state.tableData[0]).filter(elem => elem !== '_links');
       header = headerList.map((columnTitle, index) => (
         <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
@@ -284,9 +322,12 @@ class Table extends Component {
     return (
       <div className="table-container">
         {isLoaded
+        // either show 'Loading' or the real tableData
           ? (
           <table>
-            {this.state.tableData.length === 0 ? null : (
+            {this.state.tableData.length === 0 ? 
+            // in case there are no rows existing, the header will be hidden
+            null : (
               <thead>
                 <tr key="header-row">
                   <th className="hiddencolumn" key="header-hidden" />
@@ -298,6 +339,7 @@ class Table extends Component {
 
             <tbody>
               {
+                // iterate over each row of the table
                 this.state.tableData.map((dataObject, rowIndex) => {
                   const selfLinkURL = dataObject._links.self.href;
                   let elementID = selfLinkURL.split('/');
@@ -306,7 +348,10 @@ class Table extends Component {
                   return (
                     <tr key={`element-${elementID}`} id={`row-${rowIndex}`} className={ rowIndex !== toBeDeleted ? '' :  'to-be-deleted' }>
                       <td className="hiddencolumn" key={`remove-${elementID}-hidden`}>
-                      { activeRow !== rowIndex ? null : (
+                      { activeRow !== rowIndex ? 
+                      // REMOVEBUTTON
+                      // only show the remove button if the row is active
+                      null : (
                           <button 
                           className="button button-remove"
                           type="submit" key={`remove-${elementID}-button`}
@@ -319,6 +364,8 @@ class Table extends Component {
                         
                       </td>
                       {
+                        // TABLE
+                        // iterate over the each column of the row
                         Object.keys(dataObject).filter(key => key !== '_links').map((key, columnIndex) => (
                           <td 
                           key={`element-${elementID}-${key}`} 
@@ -337,7 +384,9 @@ class Table extends Component {
                             onClick={this.onDoNothing}
                             onFocus={this.onFocusChangeElementHandler} />
                             
-                          { /* only apply the redirect arrow for the first column of products and if the row is active  */
+                          { 
+                            // REDIRECTDETAIL
+                            //only apply the redirect arrow (detail page) for the first column of products and if the row is active 
                             (columnIndex === 0 && category === 'product' && rowIndex === activeRow) ? 
                             <RedirectDetail id={elementID} />
                             : null
@@ -355,7 +404,9 @@ class Table extends Component {
                     <AddButton />
                   </button>
                 </td>
-                {this.state.defaultTableHeaders.map((item, index) => 
+                { // ADD-ROW
+                  // use the predefined headers  directly for the 'add row' part of the table
+                  this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>
                     <input 
                       className="input-field" 

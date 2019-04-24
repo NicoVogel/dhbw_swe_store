@@ -18,6 +18,13 @@ import Error from './templates/Error/Error';
 import ProductDetail from './templates/ProductDetail/ProductDetail';
 
 const App = () => (
+  /**
+   * Routes the user to each component according to the given path
+   * 
+   * include redirection of root path to home page
+   * productDetail page can be called directly with the productId according to database
+   * any other path routes to the error page
+   */
   <BrowserRouter>
     <div className="app">
       <Navigation />

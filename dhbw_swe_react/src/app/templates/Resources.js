@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Constant values, strings and Urls are defined here
+ */
+
 export const SERVER_ADDRESS = 'http://viet.nat.selfnet.de:32404';
 export const REST_LINKS = new Map();
 export const headerStrings = new Map();

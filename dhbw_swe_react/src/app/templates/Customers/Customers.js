@@ -5,6 +5,7 @@ import Headline from '../../atoms/Headline/Headline';
 import Table from '../../organisms/Table/Table';
 
 class Customers extends Component {
+  // this component is identical to products, please refer to the documentation there
   constructor() {
     super();
     this.state = {

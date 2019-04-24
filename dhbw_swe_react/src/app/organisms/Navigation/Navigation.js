@@ -10,6 +10,9 @@ import './Navigation.scss';
 
 library.add(faTruck, faUsers, faSearch, faFileInvoice, faIndustry, faSeedling, faCog, faAngleLeft, faAngleRight);
 
+/**
+ * Renders a Navigation Sidebar with links for templates
+ */
 class Navigation extends Component {
 
   state = {
@@ -17,6 +20,8 @@ class Navigation extends Component {
   };
   toggle = () => {
     this.setState({
+      // update the state attribute for animations,
+      // disabling text partially and sliding the sidebar in & out
       menuOpen: !this.state.menuOpen
     })
   }
