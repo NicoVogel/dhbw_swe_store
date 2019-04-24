@@ -1,32 +1,74 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
-import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY, RemoveButton, AddButton } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
+
 const axios = require('axios');
+
+toast.configure({
+  closeButton:false,
+  autoClose: 3000,
+});
 
 // TODO
 // eslint-disable-next-line react/prefer-stateless-function
 function updateRow(row) {
+  const id = notifyInfo("Update läuft");
    axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => console.log(results))
-      .catch(error => console.log(error));
-}
-
-function postRow(row, category) {
-  axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
       .then(results => {
         console.log(results);
+        notifyUpdateSuccess(id, "Update erfolgreich");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        notifyUpdateError(id, "Update fehlgeschlagen");
+      });
 }
 
+
 function deleteRow (rowID, category) {
+  const id = notifyInfo("Eintrag löschen");
   axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
       .then(results => {
         console.log(results);
+        notifyUpdateSuccess(id, "Löschen erfolgreich");
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        notifyUpdateError(id, "Löschen fehlgeschlagen");
+      });
+}
+
+const notifyError = (text) => {
+  return toast.error(text);
+}
+
+const notifyInfo = (text) => {
+  return toast.info(text);
+}
+
+const notifySuccess = (text, hideProgressBar, autoClose) => {
+  if (autoClose !== undefined) {
+    return toast.success(text, {hideProgressBar, autoClose});
+  }
+  return toast.success(text, {hideProgressBar});
+}
+
+const notifyUpdateSuccess = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.SUCCESS,
+  });
+}
+
+const notifyUpdateError = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.ERROR,
+  });
 }
 
 class Table extends Component {
@@ -40,15 +82,13 @@ class Table extends Component {
       newEntry[headerElem] = '';
     });
 
-    // activeRow: detailed view + delete button shows up
-    // rowInEdit: user enters edit mode, text will be italic & change color
+    // activeRow: detailed view + delete button shows up, user enters edit mode, text will be italic & change color
     this.state = {
       defaultTableHeaders,
       category,
       tableData: [],
       isLoaded: false,
       errorMsg: '',
-      rowInEdit: -1,
       newEntry,
       activeRow: -1,
       toBeDeleted: -2,
@@ -65,6 +105,31 @@ class Table extends Component {
     // clearInterval(this.interval);
   }
 
+  postRow(row, category) {
+    const id = notifyInfo("Neuer Eintrag anlegen");
+    axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
+        .then(results => {
+          console.log(results);
+
+          // reset new row
+          let newEntry = {};
+          this.props.defaultTableHeaders.forEach((headerElem) => {
+            newEntry[headerElem] = '';
+          });
+
+          this.setState({
+            ...this.state,
+            newEntry,
+          });
+
+          notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
+        })
+        .catch(error => {
+          console.log({error});
+          notifyUpdateError(id, `Eintrag anlegen fehlgeschlagen - HTTP Fehler: ${error.response.status}`);
+        });
+  }
+
   getTableData() {
     const { category } = this.state;
     console.log(`refresh data for ${category}`);
@@ -77,12 +142,14 @@ class Table extends Component {
             isLoaded: true,
           });
         }
+        notifySuccess(`${CATEGORY.get(category)} erfolgreich geladen`, true, 1500);
       })
       .catch((error) => {
         this.setState({
           ...this.state,
           errorMsg: `${error}`,
         });
+        notifyError(`Ein Fehler ist aufgetreten:\n ${error}`);
       });
   }
 
@@ -104,17 +171,11 @@ class Table extends Component {
     const missingEntriesCount = Object.keys(this.state.newEntry).filter(key => this.state.newEntry[key].length === 0).length;
     
     if(missingEntriesCount === 0) {
-      postRow(this.state.newEntry, this.state.category);
-      let newEntry = {};
-      this.props.defaultTableHeaders.forEach((headerElem) => {
-        newEntry[headerElem] = '';
-      });
-
-      this.setState({
-        ...this.state,
-        newEntry,
-      })
-    } 
+      this.postRow(this.state.newEntry, this.state.category);
+      
+    } else {
+      notifyError(`Bitte fülle die restlichen ${missingEntriesCount} Felder aus!`);
+    }
   }
 
   changeHandler = (event) => {
@@ -125,8 +186,7 @@ class Table extends Component {
     const rowIndex = event.target.id.split('_')[0];
     this.setState({
       ...this.state,
-      rowInEdit: parseInt(rowIndex),
-      activeRow: -1,
+      activeRow: parseInt(rowIndex),
       toBeDeleted: -2,
     });
   }
@@ -143,7 +203,7 @@ class Table extends Component {
      const tableData = state.tableData.map((row, rowIndex) => {
        if(rowIndex===rowLine) {
          // change the value at the right spot
-         if (row[columnKey] !== newValue) {
+         if (row[columnKey].toString() !== newValue) {
            row[columnKey] = newValue;      
            updateRow(row);
           }
@@ -154,7 +214,6 @@ class Table extends Component {
      return {
        ...this.state,
        tableData,
-       rowInEdit: -1,
        activeRow: -1,
        toBeDeleted: -2,
      }
@@ -198,7 +257,6 @@ class Table extends Component {
     this.setState({
       ...this.state,
       activeRow: -1,
-      rowInEdit: -1,
       toBeDeleted: -2,
     })
   }
@@ -212,7 +270,7 @@ class Table extends Component {
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted, category
+      isLoaded, errorMsg, activeRow, toBeDeleted, category
     } = this.state;
     let header;
 
@@ -254,7 +312,7 @@ class Table extends Component {
                           type="submit" key={`remove-${elementID}-button`}
                           id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
-                            X
+                            <RemoveButton />
                           </button>
                         )
                       }
@@ -269,7 +327,7 @@ class Table extends Component {
                           >
 
                             <input 
-                            className={`input-field ${rowInEdit === rowIndex ? 'in-edit': ''}`}
+                            className={`input-field ${activeRow === rowIndex ? 'in-edit': ''}`}
                             type="text" 
                             key={`element-${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
@@ -293,7 +351,9 @@ class Table extends Component {
               }
               <tr key="add-row">
                 <td className="hiddencolumn" key="add-hidden">
-                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
+                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >
+                    <AddButton />
+                  </button>
                 </td>
                 {this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>
@@ -316,7 +376,6 @@ class Table extends Component {
             errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
           ]
         }
-        
         
       </div>
     );
