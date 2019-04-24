@@ -1,8 +1,8 @@
-# Code Konvenzionen
+# Code Konventionen
 
 Das Projekt Großmarkt wurde mit zwei Programmiersprachen implementiert. Java für die Serverseite und JavaScript für die Clientseite.
 
-## Java Konvenzionen
+## Java Konventionen
 
 Der Java Server ist nach den folgenden Konventionen geschrieben:
 
@@ -28,4 +28,4 @@ Der Java Server ist nach den folgenden Konventionen geschrieben:
     - 6: Private Methoden
   - Attribute: *Alle nicht statische Attribute müssen private sein*
 
-## Javascript Konvenzion
+## Javascript Konvention
