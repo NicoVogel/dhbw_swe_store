@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
-import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY, RemoveButton, AddButton } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
 // use a library instead of vanilla js for REST API , due to better performance and ease of use
@@ -352,10 +352,10 @@ class Table extends Component {
                           type="submit" key={`remove-${elementID}-button`}
                           id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
-                            <div id={`${elementID}_${rowIndex}_btn_container`}>
-                              <RemoveButton />
-                            </div>
+                            {/* <RemoveButton /> */}
+                            X
                           </button>
+                          
                         )
                       }
                         
@@ -398,7 +398,8 @@ class Table extends Component {
               <tr key="add-row">
                 <td className="hiddencolumn" key="add-hidden">
                   <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >
-                    <AddButton />
+                    {/* <AddButton /> */}
+                    +
                   </button>
                 </td>
                 { // ADD-ROW
