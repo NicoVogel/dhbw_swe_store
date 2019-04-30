@@ -14,35 +14,6 @@ toast.configure({
   autoClose: 3000,
 });
 
-// REST API (without needing the state)
-
-function updateRow(row) {
-  const id = notifyInfo("Update läuft");
-   axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => {
-        console.log(results);
-        notifyUpdateSuccess(id, "Update erfolgreich");
-      })
-      .catch(error => {
-        console.log(error);
-        notifyUpdateError(id, "Update fehlgeschlagen");
-      });
-}
-
-
-function deleteRow (rowID, category) {
-  const id = notifyInfo("Eintrag löschen");
-  axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
-      .then(results => {
-        console.log(results);
-        notifyUpdateSuccess(id, "Löschen erfolgreich");
-      })
-      .catch(error => {
-        console.log(error);
-        notifyUpdateError(id, "Löschen fehlgeschlagen");
-      });
-}
-
 // ----------------------------
 // NOTIFICATION
 
@@ -109,26 +80,47 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    this.getTableData();
-    // currently changes can only be seen after a refresh, alternatively, use the workaround
-
-    // this is a workaround as getTableData is not called after postRow *async bullshit* :)
-    // this.interval = setInterval(() => this.getTableData(), 1000);
-  }
-
-  componentWillUnmount() {
-    // clearInterval(this.interval);
+    this.getTableData(true);
   }
 
   // ------------------------------------
 
-  // Rest Call for updating a row, but needs acces to props and states for updating values
+  // REST API Call for updating a row, needs acces to props and states for updating values
+
+  updateRow(row) {
+    const id = notifyInfo("Update läuft");
+    axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
+        .then(results => {
+          console.log(results);
+          notifyUpdateSuccess(id, "Update erfolgreich");
+          this.getTableData(false)
+        })
+        .catch(error => {
+          console.log(error);
+          notifyUpdateError(id, "Update fehlgeschlagen");
+        });
+  }
+
+
+  deleteRow (rowID, category) {
+    const id = notifyInfo("Eintrag löschen");
+    axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
+        .then(results => {
+          console.log(results);
+          notifyUpdateSuccess(id, "Löschen erfolgreich");
+          this.getTableData(false)
+        })
+        .catch(error => {
+          console.log(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
+          console.log(error);
+          notifyUpdateError(id, "Löschen fehlgeschlagen");
+        });
+  }
+
   postRow(row, category) {
     const id = notifyInfo("Neuer Eintrag anlegen");
     axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
         .then(results => {
-          console.log(results);
-
           // reset new row
           let newEntry = {};
           this.props.defaultTableHeaders.forEach((headerElem) => {
@@ -141,6 +133,7 @@ class Table extends Component {
           });
 
           notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
+          this.getTableData(false);
         })
         .catch(error => {
           console.log({error});
@@ -150,9 +143,8 @@ class Table extends Component {
 
   // Rest Call for fetching the table data, but needs acces to state for filling tableData
 
-  getTableData() {
+  getTableData(initial) {
     const { category } = this.state;
-    console.log(`refresh data for ${category}`);
     axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
         if (results.status === 200) {
@@ -162,7 +154,10 @@ class Table extends Component {
             isLoaded: true,
           });
         }
-        notifySuccess(`${CATEGORY.get(category)} erfolgreich geladen`, true, 1500);
+        if (initial) {
+          console.log(`refresh data for ${category}`);
+          notifySuccess(`${CATEGORY.get(category)} erfolgreich geladen`, true, 1500);
+        }
       })
       .catch((error) => {
         this.setState({
@@ -231,7 +226,7 @@ class Table extends Component {
          // change the value at the right spot
          if (row[columnKey].toString() !== newValue) {
            row[columnKey] = newValue;      
-           updateRow(row);
+           this.updateRow(row);
           }
         } 
       return row;
@@ -252,7 +247,7 @@ class Table extends Component {
   onClickDeleteRowHandler = (event) => {
     const rowID = event.target.id.split('_')[0];
     const { activeRow, toBeDeleted, category } = this.state;
-
+    console.log(event.target)
     // this prevents the user from deleting on first click by saving the step inbetween
     if (activeRow !== toBeDeleted) {
       this.setState({
@@ -261,7 +256,7 @@ class Table extends Component {
       });
     } else {
 
-      deleteRow(rowID, category);
+      this.deleteRow(rowID, category);
       this.setState({
         ...this.state,
         activeRow: -1,
@@ -357,7 +352,9 @@ class Table extends Component {
                           type="submit" key={`remove-${elementID}-button`}
                           id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
-                            <RemoveButton />
+                            <div id={`${elementID}_${rowIndex}_btn_container`}>
+                              <RemoveButton />
+                            </div>
                           </button>
                         )
                       }
