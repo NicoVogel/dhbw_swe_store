@@ -58,30 +58,37 @@ Table td .input-field {
 Table .hiddencolumn {
     background: white;
     border: none;
-    width: 30px;
-    padding: 0 8px;
-}
+    width: 30px; 
+    padding: 0 3px; 
+} 
+ 
+Table .button { 
+    border: none; 
+    color: white; 
+    outline: none; 
+    border-radius: 5px; 
+    height: 25px; 
+    width: 25px; 
+    font-size: larger; 
+    cursor: pointer; 
+    &:active { 
+        color: $color-accent; 
+    } 
+} 
+Table .button-add { 
+    background-color: $color-main; 
+} 
+ 
+Table .button-remove { 
+    background-color: red; 
+    &:active { 
+        color: $color-text-medium; 
+    } 
+} 
 
-Table .button {
-    border: none;
-    color: white;
-    outline: none;
-    border-radius: 5px;
-    height: 25px;
-    width: 25px;
-    font-size: larger;
-    cursor: pointer;
-    &:active {
-        color: $color-accent;
-    }
+.Toastify__toast--success {
+    background-color: $color-accent;
 }
-Table .button-add {
+.Toastify__toast--info {
     background-color: $color-main;
-}
-
-Table .button-remove {
-    background-color: red;
-    &:active {
-        color: $color-text-medium;
-    }
 }

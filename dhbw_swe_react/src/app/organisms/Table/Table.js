@@ -1,33 +1,57 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Table.scss';
-import { SERVER_ADDRESS, REST_LINKS, headerStrings } from '../../templates/Resources';
+import { SERVER_ADDRESS, REST_LINKS, headerStrings, CATEGORY } from '../../templates/Resources';
 import RedirectDetail from '../../atoms/RedirectDetail/RedirectDetail';
 
+// use a library instead of vanilla js for REST API , due to better performance and ease of use
 const axios = require('axios');
 
-// TODO
-// eslint-disable-next-line react/prefer-stateless-function
-function updateRow(row) {
-   axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => console.log(results))
-      .catch(error => console.log(error));
+// configure notification system globally
+toast.configure({
+  closeButton:false,
+  autoClose: 3000,
+});
+
+// ----------------------------
+// NOTIFICATION
+
+const notifyError = (text) => {
+  return toast.error(text);
 }
 
-function postRow(row, category) {
-  axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
-      .then(results => {
-        console.log(results);
-      })
-      .catch(error => console.log(error));
+const notifyInfo = (text) => {
+  return toast.info(text);
 }
 
-function deleteRow (rowID, category) {
-  axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
-      .then(results => {
-        console.log(results);
-      })
-      .catch(error => console.log(error));
+const notifySuccess = (text, hideProgressBar, autoClose) => {
+  if (autoClose !== undefined) {
+    return toast.success(text, {hideProgressBar, autoClose});
+  }
+  return toast.success(text, {hideProgressBar});
 }
+
+const notifyUpdateSuccess = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.SUCCESS,
+  });
+}
+
+const notifyUpdateError = (id, text) => {
+  toast.update(id, {
+    render: text,
+    type: toast.TYPE.ERROR,
+  });
+}
+
+// ------------------------
+
+/**
+ * Renders a Table 
+ * @param {props} props needs category and default headers
+ */
 
 class Table extends Component {
 
@@ -40,34 +64,87 @@ class Table extends Component {
       newEntry[headerElem] = '';
     });
 
-    // activeRow: detailed view + delete button shows up
-    // rowInEdit: user enters edit mode, text will be italic & change color
     this.state = {
       defaultTableHeaders,
       category,
       tableData: [],
       isLoaded: false,
       errorMsg: '',
-      rowInEdit: -1,
+      // newEntry: temporarily hold the new row
       newEntry,
+      // activeRow: detailed view + delete button shows up, user enters edit mode, text will be italic & change color
       activeRow: -1,
+      // toBeDeleted: selected row will be marked red, provides an intermediate step before deleting 
       toBeDeleted: -2,
     }
   }
 
   componentDidMount() {
-    this.getTableData();
-    // this is a workaround as getTableData is not called after postRow *async bullshit* :)
-    // this.interval = setInterval(() => this.getTableData(), 1000);
+    this.getTableData(true);
   }
 
-  componentWillUnmount() {
-    // clearInterval(this.interval);
+  // ------------------------------------
+
+  // REST API Call for updating a row, needs acces to props and states for updating values
+
+  updateRow(row) {
+    const id = notifyInfo("Update läuft");
+    axios.put(row._links.self.href, row ,{headers: {'Content-Type': 'application/json'}})
+        .then(results => {
+          console.log(results);
+          notifyUpdateSuccess(id, "Update erfolgreich");
+          this.getTableData(false)
+        })
+        .catch(error => {
+          console.log(error);
+          notifyUpdateError(id, "Update fehlgeschlagen");
+        });
   }
 
-  getTableData() {
+
+  deleteRow (rowID, category) {
+    const id = notifyInfo("Eintrag löschen");
+    axios.delete(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
+        .then(results => {
+          console.log(results);
+          notifyUpdateSuccess(id, "Löschen erfolgreich");
+          this.getTableData(false)
+        })
+        .catch(error => {
+          console.log(`${SERVER_ADDRESS}${REST_LINKS.get(category)}/${rowID}`)
+          console.log(error);
+          notifyUpdateError(id, "Löschen fehlgeschlagen");
+        });
+  }
+
+  postRow(row, category) {
+    const id = notifyInfo("Neuer Eintrag anlegen");
+    axios.post(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`, row ,{headers: {'Content-Type': 'application/json'}})
+        .then(results => {
+          // reset new row
+          let newEntry = {};
+          this.props.defaultTableHeaders.forEach((headerElem) => {
+            newEntry[headerElem] = '';
+          });
+
+          this.setState({
+            ...this.state,
+            newEntry,
+          });
+
+          notifyUpdateSuccess(id, "Neuer Eintrag erfolgreich angelegt");
+          this.getTableData(false);
+        })
+        .catch(error => {
+          console.log({error});
+          notifyUpdateError(id, `Eintrag anlegen fehlgeschlagen - HTTP Fehler: ${error.response.status}`);
+        });
+  }
+
+  // Rest Call for fetching the table data, but needs acces to state for filling tableData
+
+  getTableData(initial) {
     const { category } = this.state;
-    console.log(`refresh data for ${category}`);
     axios.get(`${SERVER_ADDRESS}${REST_LINKS.get(category)}`)
       .then((results) => {
         if (results.status === 200) {
@@ -77,17 +154,22 @@ class Table extends Component {
             isLoaded: true,
           });
         }
+        if (initial) {
+          console.log(`refresh data for ${category}`);
+          notifySuccess(`${CATEGORY.get(category)} erfolgreich geladen`, true, 1500);
+        }
       })
       .catch((error) => {
         this.setState({
           ...this.state,
           errorMsg: `${error}`,
         });
+        notifyError(`Ein Fehler ist aufgetreten:\n ${error}`);
       });
   }
 
   // ----------------------------------------------------
-  /* HANDLER */
+  /* EVENTHANDLER */
 
   onChangeAddElementHandler = (event) => {
 
@@ -104,33 +186,32 @@ class Table extends Component {
     const missingEntriesCount = Object.keys(this.state.newEntry).filter(key => this.state.newEntry[key].length === 0).length;
     
     if(missingEntriesCount === 0) {
-      postRow(this.state.newEntry, this.state.category);
-      let newEntry = {};
-      this.props.defaultTableHeaders.forEach((headerElem) => {
-        newEntry[headerElem] = '';
-      });
-
-      this.setState({
-        ...this.state,
-        newEntry,
-      })
-    } 
+      this.postRow(this.state.newEntry, this.state.category);
+      
+    } else {
+      notifyError(`Bitte fülle die restlichen ${missingEntriesCount} Felder aus!`);
+    }
   }
 
   changeHandler = (event) => {
-    // TODO
+    // do nothing on change, as other onblur/onfocus are less resource intensive but do the same
   }
-
+ 
+  /**
+   * Update the active row which is in current focus
+   */
   onFocusChangeElementHandler = (event) => {
     const rowIndex = event.target.id.split('_')[0];
     this.setState({
       ...this.state,
-      rowInEdit: parseInt(rowIndex),
-      activeRow: -1,
+      activeRow: parseInt(rowIndex),
       toBeDeleted: -2,
     });
   }
 
+  /**
+   * Sends an Update to the DB if there is a change in the active Row, reset all active markers afterwards
+   */
   onBlurChangeElementHandler = event => {
   
    const rowLine = parseInt(event.target.id.split('_')[0]);
@@ -143,9 +224,9 @@ class Table extends Component {
      const tableData = state.tableData.map((row, rowIndex) => {
        if(rowIndex===rowLine) {
          // change the value at the right spot
-         if (row[columnKey] !== newValue) {
+         if (row[columnKey].toString() !== newValue) {
            row[columnKey] = newValue;      
-           updateRow(row);
+           this.updateRow(row);
           }
         } 
       return row;
@@ -154,18 +235,19 @@ class Table extends Component {
      return {
        ...this.state,
        tableData,
-       rowInEdit: -1,
        activeRow: -1,
        toBeDeleted: -2,
      }
    });
   }
 
+  /**
+   * Deletes the row, mark the row first and deletes it when toBeDeleted matches the active row again
+   */
   onClickDeleteRowHandler = (event) => {
     const rowID = event.target.id.split('_')[0];
-    // const rowIndex = event.target.id.split('_')[1];
     const { activeRow, toBeDeleted, category } = this.state;
-
+    console.log(event.target)
     // this prevents the user from deleting on first click by saving the step inbetween
     if (activeRow !== toBeDeleted) {
       this.setState({
@@ -174,7 +256,7 @@ class Table extends Component {
       });
     } else {
 
-      deleteRow(rowID, category);
+      this.deleteRow(rowID, category);
       this.setState({
         ...this.state,
         activeRow: -1,
@@ -183,6 +265,9 @@ class Table extends Component {
     }
   }
 
+  /**
+   * Marks the row as active (for displaying remove & detail buttons)
+   */
   onClickMakeActive = (event) => {
     // if the input field is clicked instead of td, the id field is different
     // category will be included and need to be splitted
@@ -194,30 +279,36 @@ class Table extends Component {
     })
   }
 
+  /**
+   * Resets every marker
+   */
   resetActive = () => {
     this.setState({
       ...this.state,
       activeRow: -1,
-      rowInEdit: -1,
       toBeDeleted: -2,
     })
   }
 
+  /**
+   * Testing purposes only!
+   */
   onDoNothing = (event) => {
     // override parents onclick method
     event.stopPropagation();
   }
-  /** */
+
+  // ---------------------------
 
   render() {
 
     const {
-      isLoaded, errorMsg, activeRow, rowInEdit, toBeDeleted, category
+      isLoaded, errorMsg, activeRow, toBeDeleted, category
     } = this.state;
     let header;
 
+    // generate the header from the first row of the tableData
     if(this.state.tableData.length !== 0){
-     
       const headerList = Object.keys(this.state.tableData[0]).filter(elem => elem !== '_links');
       header = headerList.map((columnTitle, index) => (
         <th key={`header-${index}`}>{headerStrings.get(columnTitle)}</th>
@@ -226,9 +317,12 @@ class Table extends Component {
     return (
       <div className="table-container">
         {isLoaded
+        // either show 'Loading' or the real tableData
           ? (
           <table>
-            {this.state.tableData.length === 0 ? null : (
+            {this.state.tableData.length === 0 ? 
+            // in case there are no rows existing, the header will be hidden
+            null : (
               <thead>
                 <tr key="header-row">
                   <th className="hiddencolumn" key="header-hidden" />
@@ -240,6 +334,7 @@ class Table extends Component {
 
             <tbody>
               {
+                // iterate over each row of the table
                 this.state.tableData.map((dataObject, rowIndex) => {
                   const selfLinkURL = dataObject._links.self.href;
                   let elementID = selfLinkURL.split('/');
@@ -248,19 +343,26 @@ class Table extends Component {
                   return (
                     <tr key={`element-${elementID}`} id={`row-${rowIndex}`} className={ rowIndex !== toBeDeleted ? '' :  'to-be-deleted' }>
                       <td className="hiddencolumn" key={`remove-${elementID}-hidden`}>
-                      { activeRow !== rowIndex ? null : (
+                      { activeRow !== rowIndex ? 
+                      // REMOVEBUTTON
+                      // only show the remove button if the row is active
+                      null : (
                           <button 
                           className="button button-remove"
                           type="submit" key={`remove-${elementID}-button`}
                           id={`${elementID}_${rowIndex}`}
                           onClick={this.onClickDeleteRowHandler}>
+                            {/* <RemoveButton /> */}
                             X
                           </button>
+                          
                         )
                       }
                         
                       </td>
                       {
+                        // TABLE
+                        // iterate over the each column of the row
                         Object.keys(dataObject).filter(key => key !== '_links').map((key, columnIndex) => (
                           <td 
                           key={`element-${elementID}-${key}`} 
@@ -269,7 +371,7 @@ class Table extends Component {
                           >
 
                             <input 
-                            className={`input-field ${rowInEdit === rowIndex ? 'in-edit': ''}`}
+                            className={`input-field ${activeRow === rowIndex ? 'in-edit': ''}`}
                             type="text" 
                             key={`element-${elementID}-${key}-input`} 
                             defaultValue={dataObject[key]} 
@@ -279,7 +381,9 @@ class Table extends Component {
                             onClick={this.onDoNothing}
                             onFocus={this.onFocusChangeElementHandler} />
                             
-                          { /* only apply the redirect arrow for the first column of products and if the row is active  */
+                          { 
+                            // REDIRECTDETAIL
+                            //only apply the redirect arrow (detail page) for the first column of products and if the row is active 
                             (columnIndex === 0 && category === 'product' && rowIndex === activeRow) ? 
                             <RedirectDetail id={elementID} />
                             : null
@@ -293,9 +397,14 @@ class Table extends Component {
               }
               <tr key="add-row">
                 <td className="hiddencolumn" key="add-hidden">
-                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >+</button>
+                  <button className="button button-add" type="submit" key="add-button" onClick={this.onClickAddRowHandler} >
+                    {/* <AddButton /> */}
+                    +
+                  </button>
                 </td>
-                {this.state.defaultTableHeaders.map((item, index) => 
+                { // ADD-ROW
+                  // use the predefined headers  directly for the 'add row' part of the table
+                  this.state.defaultTableHeaders.map((item, index) => 
                   <td key={`add-${index}`}>
                     <input 
                       className="input-field" 
@@ -316,7 +425,6 @@ class Table extends Component {
             errorMsg.length === 0 ? <h1 key="temp-loading">LOADING</h1> : <h1 key="temp-error">{errorMsg}</h1>,
           ]
         }
-        
         
       </div>
     );

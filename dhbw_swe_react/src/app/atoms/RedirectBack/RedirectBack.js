@@ -8,6 +8,10 @@ import './RedirectBack.scss';
 
 library.add(faArrowLeft);
 
+/**
+ * Renders an 'Get Back' type button with custom text
+ * @param {props} props includes history (passed down from the calling template) and text to be shown next to the button
+ */
 const RedirectBack = (props) => {
   const { history, text } = props;
   return (
